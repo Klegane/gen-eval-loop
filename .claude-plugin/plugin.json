@@ -1,0 +1,8 @@
+{
+  "name": "gen-eval-loop",
+  "description": "Generator-Evaluator (GAN-style) loop for ambitious, high-quality deliverables: strict separation of build and verification, sprint contracts, live Playwright evaluation, and a scored rubric with a threshold.",
+  "version": "0.1.0",
+  "author": {
+    "name": "eriks"
+  }
+}
