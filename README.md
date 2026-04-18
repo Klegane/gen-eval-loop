@@ -61,7 +61,7 @@ gen-eval-loop/
 The loop picks a mode based on the current model:
 
 - **Opus-tier (Opus 4.6, 4.7, newer):** `single-pass` — one spec, one large contract, one exhaustive evaluation. Cap: 5 iterations.
-- **Sonnet-tier and older (Sonnet 4.6, Sonnet 3.5, Opus 4.5, legacy):** `short-sprint` — cohesive slices of 3–5 files, evaluated after each. Cap: 15 iterations.
+- **Sonnet-tier and older (Sonnet 4.6, legacy):** `short-sprint` — cohesive slices of 3–5 files, evaluated after each. Cap: 15 iterations.
 
 Unknown models default to `short-sprint` (safer).
 
