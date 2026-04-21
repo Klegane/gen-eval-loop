@@ -1,150 +1,190 @@
 ---
 name: gen-eval-loop
-description: Use when the user wants an ambitious, high-quality deliverable (polished UI, visual product, agentic feature) where LLM self-assessment is unreliable. Triggers on tasks that need strict separation between building and verification, scored against a rubric with a threshold, and live checks via Playwright. Skip for bugfixes, mechanical tasks, or refactors with no subjective quality bar.
+description: Use when the user wants an AI quality system, not just an AI builder. This skill creates auditable runs with a quality profile, signed contract, evidence per criterion, a scorecard, and a final summary. Best for ambitious UI, backend, agentic, or content work where self-assessment is unreliable.
 ---
 
-# Generator-Evaluator Loop (GAN-style)
+# gen-eval-loop
 
-## Overview
+## Purpose
 
-LLMs are bad at self-evaluating their own work — they over-praise mediocre output. This skill borrows the GAN pattern: **the agent that builds must not be the agent that judges**. You orchestrate three isolated roles (Planner, Generator, Evaluator) through file-based handoffs and a scored rubric with a strict threshold.
+This skill turns a loose generator-evaluator loop into a run-based quality system.
 
-**Core principle:** Generator and Evaluator are adversaries. The Evaluator's job is to *find flaws*, not to validate the Generator. The rubric is the contract; the threshold is non-negotiable.
+Its job is to stop the common failure mode where an agent:
 
-## When to Use
+1. builds something mediocre
+2. writes a flattering self-review
+3. calls the task done
 
-```
-Ambitious deliverable with subjective quality bar? ─yes─► Does "looking good" matter more than "passing tests"? ─yes─► gen-eval-loop
-                                                                                                             ─no──► subagent-driven-development
-                                                   ─no──► Manual execution or smaller skill
-```
+This skill exists to enforce a different path:
 
-**Use when:**
-- Building polished UI, landing pages, visual products
-- Designing agentic features where behavior quality is fuzzy
-- Producing product specs where "ambition" matters
-- You've noticed the model praising its own mediocre output
-- The user said "make it great" (not "make it work")
+1. define a quality bar
+2. scope a sprint against that bar
+3. build only after the scope is signed
+4. require evidence before PASS
+5. keep an audit trail of how the result earned its verdict
 
-**Do NOT use for:**
-- Bugfixes of a few lines
-- Mechanical refactors
-- Tasks with purely binary pass/fail tests (use `subagent-driven-development`)
-- One-off scripts
+## The Four Axes The Controller Must Decide
 
-## The Three Roles
+Before dispatching any role, the controller must decide and record:
 
-Each role is a **fresh subagent** dispatched via `Task` — never the controller itself. Isolated context keeps them honest.
+1. `run_id` - unique namespace for all artefacts
+2. `execution_mode` - `full-loop`, `plan-only`, or `evaluate-only`
+3. `quality_profile` - `ui`, `backend`, `agentic`, or `content`
+4. `delivery_mode` - `single-pass` or `short-sprint`
+5. `git_mode` - `commit-mode` or `workspace-mode`
 
-**Planner.** Expands the user's prompt into an ambitious product spec. Focuses on *what* and *why*, never *how*. Output: `docs/gen-eval/spec.md`. Template: [planner-prompt.md](planner-prompt.md).
+These choices are recorded in:
 
-**Generator.** Reads the spec and the sprint contract, writes code, commits to git, writes a status report. Can propose architectural pivots if stuck. Template: [generator-prompt.md](generator-prompt.md).
+- `docs/gen-eval/<run-id>/spec.md`
+- `.gen-eval/<run-id>/state.json`
 
-**Evaluator.** Reads the contract and the report, then **exercises the system for real**: clicks through with Playwright, hits endpoints, inspects DB, studies screenshots. Scores against the rubric. Adversarial tone — does not trust the Generator. Template: [evaluator-prompt.md](evaluator-prompt.md).
+## Files To Load
 
-## The Process
+The controller should use these files in this order:
 
-1. **Planner expansion** — Dispatch Planner with the user's prompt. It writes `docs/gen-eval/spec.md`.
-2. **Sprint contract negotiation** — Generator drafts `contract.md` (scope + evaluable criteria + threshold + verification method). Evaluator reviews and signs (or requests changes). Iterate until both sign. See [sprint-contract-template.md](sprint-contract-template.md).
-3. **Generator builds** — Implements the contract's scope. Commits via git. Writes `sprint-N/report.md`.
-4. **Evaluator verifies live** — Runs the app, clicks through, takes screenshots, checks endpoints. Scores 0–10 per rubric criterion. Writes `sprint-N/score.md` with PASS/FAIL and specific feedback.
-5. **Branch on result:**
-   - All criteria ≥ threshold → sprint PASS → next sprint or final delivery.
-   - Any criterion < threshold → sprint FAIL → Generator reads `score.md`, decides **refine** vs **pivot** (see below), starts next sprint.
-6. **Stop condition** — Deliverable meets rubric across all sprints, or iteration cap reached (default 15). Escalate to user if capped.
+1. [artifact-schema.md](artifact-schema.md)
+2. [state-machine.md](state-machine.md)
+3. [file-communication-layout.md](file-communication-layout.md)
+4. [model-adaptation.md](model-adaptation.md)
+5. the active profile rubric under `profiles/<profile>/rubric.md`
+6. the relevant prompt template:
+   - [planner-prompt.md](planner-prompt.md)
+   - [generator-prompt.md](generator-prompt.md)
+   - [evaluator-prompt.md](evaluator-prompt.md)
+7. [run-summary-template.md](run-summary-template.md)
 
-All handoffs happen through files in [file-communication-layout.md](file-communication-layout.md) — never by stuffing large context into `Task` prompts.
+## When To Use
 
-## The Rubric
+Use this skill when:
 
-Four criteria, scored 0–10, default threshold 7:
+- the user wants a quality system or quality gate for AI work
+- subjective quality matters and self-grading is risky
+- the work needs evidence, not just a self-report
+- the output should be resumable and auditable across sprints
 
-- **Design Quality** — visual hierarchy, typography, palette, spacing.
-- **Originality** — avoids "AI slop": generic fonts (Inter/Arial), purple-on-white gradients, cookie-cutter layouts.
-- **Craft** — micro-details, consistency, zero visible bugs, no console errors.
-- **Functionality** — every flow in the contract works end-to-end.
+## When Not To Use
 
-Full descriptors in [scoring-rubric.md](scoring-rubric.md). The contract can raise a threshold for a sprint but never lower it.
+Do not use this skill for:
+
+- tiny bug fixes
+- purely mechanical refactors
+- throwaway scripts
+- tasks where a binary test already defines success
+
+## Quality Profile Selection
+
+Pick exactly one profile per run:
+
+- `ui` for visual surfaces, frontends, landing pages, dashboards
+- `backend` for services, APIs, data workflows, scheduled jobs
+- `agentic` for tool-using agents, orchestrators, multi-step automation
+- `content` for long-form writing, specs, customer-facing copy, knowledge artefacts
+
+Never mix rubric dimensions from multiple profiles in one sprint contract.
+
+## Role Definitions
+
+Each role must run in a fresh subagent session. The controller never reuses the same Generator or Evaluator session for the next sprint.
+
+### Planner
+
+- reads the user request plus run configuration
+- writes `docs/gen-eval/<run-id>/spec.md`
+- defines the quality intent and auditable success criteria
+- does not choose implementation details
+
+### Generator
+
+- drafts `contract.md`
+- implements only after the contract is signed
+- writes `report.md`
+- proposes `refine` or `pivot` after failed sprints
+
+### Evaluator
+
+- reviews contract quality before implementation
+- scores the finished sprint against the active profile rubric
+- writes `score.md` and `evidence.json`
+- is skeptical by default
+
+## Controller Workflow
+
+1. Initialize run directories and `state.json`.
+2. Dispatch Planner and validate the spec.
+3. For each sprint:
+   - Generator drafts contract
+   - Evaluator reviews contract
+   - controller checks signatures and schema
+   - Generator implements
+   - Evaluator scores and writes evidence
+   - controller updates state and branches
+4. Write `summary.md` at the end of the run.
+
+## Gates
+
+The controller must enforce these gates:
+
+### Gate A - Spec gate
+
+Do not start sprint work unless `spec.md` exists and includes:
+
+- run metadata in frontmatter
+- quality profile
+- success criteria that can actually be checked
+- explicit non-goals
+
+### Gate B - Contract gate
+
+Do not start implementation unless `contract.md`:
+
+- validates against the artefact schema
+- includes non-empty scope and out-of-scope
+- maps each criterion to a valid rubric dimension
+- contains both Generator and Evaluator signatures
+
+### Gate C - Evaluation gate
+
+Do not accept PASS unless:
+
+- `score.md` exists
+- `evidence.json` exists
+- every criterion has evidence
+- no criterion is `UNVERIFIED`
+- every criterion is at or above threshold
+
+### Gate D - Finalization gate
+
+Do not mark the run complete until `summary.md` reflects:
+
+- final verdict
+- sprint history
+- residual risks
+- profile and mode choices
 
 ## Refine vs Pivot
 
-When a sprint fails, the Generator must make a strategic call before starting the next:
+After a failed sprint, the Generator must choose one:
 
-- **Refine** if the score shows the direction is right (most criteria ≥ threshold, one or two close behind). Incremental fixes.
-- **Pivot** if the same criterion has failed in two consecutive sprints, or the score is a blanket low. Propose a different architecture/design direction in the next contract — don't patch a dead end.
+- `refine` when the direction is working and specific defects are blocking PASS
+- `pivot` when the direction is failing structurally or the same dimension has failed twice in a row
 
-Record the decision at the top of the next `contract.md`.
+The next contract must record that decision explicitly.
 
-## Model Adaptation
+## Controller Discipline
 
-The rigidity of the loop depends on the underlying model. See [model-adaptation.md](model-adaptation.md).
+The controller must not:
 
-- **Opus-tier (Opus 4.6, 4.7):** single-pass mode. Planner → Generator builds everything → Evaluator runs one exhaustive pass at the end. Iterate only on failure.
-- **Sonnet-tier and older (Sonnet 4.6, Sonnet 3.5, Opus 4.5, legacy):** short-sprint mode. 3–5 files per sprint, evaluation after each, cap 15 iterations. Sonnet 4.6 is strong but benefits from tighter feedback loops — its context-coherence budget is narrower than Opus.
+- write product code instead of dispatching the Generator in `full-loop`
+- let a sprint bypass signatures
+- treat missing evidence as a soft warning
+- let the wrong profile rubric leak into scoring
+- keep going after the iteration cap
 
-The controller detects the current model at start and logs the chosen mode in `docs/gen-eval/spec.md` header.
+## Output Philosophy
 
-## Controller Responsibilities
+This is a quality system, not an essay generator. Artefacts should be:
 
-The controller (you, orchestrating in the main session) does NOT write code. Its job:
-
-1. Detect model → pick mode.
-2. Dispatch Planner → read `spec.md`.
-3. For each sprint: dispatch Generator → dispatch Evaluator → handle result → decide next sprint or stop.
-4. Keep `TodoWrite` in sync with sprint progress.
-5. Surface user-gating questions via `AskUserQuestion` when the Evaluator flags something that needs human taste (not on every sprint — only when it genuinely can't judge).
-
-## Red Flags
-
-**Never:**
-- Let the Generator grade its own work.
-- Skip the Playwright (or equivalent live) verification when evaluating UI.
-- Accept "close enough" — the threshold is the threshold.
-- Pass large content between roles in prompts — use files.
-- Start a sprint without a signed contract.
-- Let the controller start coding directly instead of dispatching.
-- Continue past sprint 15 without escalating to the user.
-
-**If two sprints fail on the same criterion** → pivot, do not patch.
-
-**If the Evaluator cannot run the app** → that is itself a FAIL (Craft/Functionality). Don't let the Evaluator score blind.
-
-## Related Skills
-
-- **subagent-driven-development** — use instead when tasks have binary pass/fail criteria and you don't need a subjective rubric. That skill is about spec compliance; this skill is about quality under ambition.
-- **frontend-design** — useful reference for "Originality" in the rubric (what counts as AI slop).
-- **writing-plans** — use before invoking this skill if the user wants to review the spec before any code is written.
-
-## Example Turn
-
-```
-User: /gen-eval build a specialty coffee roaster landing page
-
-Controller:
-  [detects claude-opus-4-7 → single-pass mode, logs decision]
-  [dispatches Planner with the user prompt]
-Planner → writes docs/gen-eval/spec.md (vision, audience, success criteria)
-
-Controller:
-  [dispatches Generator to draft sprint-1 contract from spec]
-Generator → writes .gen-eval/sprint-1/contract.md (scope: hero+menu+story sections; threshold 7/10; verification: Playwright visits /, screenshots hero+menu, no console errors)
-
-Controller:
-  [dispatches Evaluator to review contract]
-Evaluator → signs (or requests changes). Both sign.
-
-Controller:
-  [dispatches Generator to implement]
-Generator → builds, commits, writes report.md
-
-Controller:
-  [dispatches Evaluator to verify]
-Evaluator → starts dev server, Playwright navigates, screenshots, scores:
-  Design 8, Originality 5 (Inter font + purple gradient — AI slop), Craft 7, Functionality 9
-  Verdict: FAIL (Originality below threshold)
-
-Controller:
-  [Generator reads score.md, decides: pivot (change type system + palette)]
-  [dispatches Generator for sprint-2 with pivot note in contract]
-  ...
-```
+- concise enough to audit quickly
+- structured enough to validate
+- opinionated enough to push quality upward
+- specific enough that another evaluator could replay the run

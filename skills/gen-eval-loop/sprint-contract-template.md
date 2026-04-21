@@ -1,68 +1,96 @@
 # Sprint Contract Template
 
-Every sprint begins with a contract. The Generator drafts it; the Evaluator reviews and signs (or requests changes). No code is written until both lines are signed.
+Every sprint starts with a contract. The Generator drafts it. The Evaluator signs it only after checking scope, criteria, and verification steps.
 
-Save at `.gen-eval/sprint-N/contract.md`.
+Save at `.gen-eval/<run-id>/sprint-N/contract.md`.
 
-## Template
+## Frontmatter
 
-```markdown
-# Sprint N Contract
-
-## Strategic decision
-One of: `initial` (sprint 1) | `refine` (continue current direction) | `pivot` (abandon previous approach). If pivot, explain in 2–3 sentences why the previous direction failed and what changes.
-
-## Scope
-Exactly what will be built in this sprint. Bulleted, each item user-visible.
-
-- [item 1]
-- [item 2]
-- [item 3]
-
-## Out of scope (this sprint)
-Explicit list of things the Generator will NOT touch, to prevent scope creep.
-
-- [thing deferred]
-- [thing deferred]
-
-## Evaluable criteria
-Each criterion must map to one of the four rubric dimensions and specify how it will be checked.
-
-| Criterion | Rubric dim.   | Threshold | How the Evaluator checks it |
-|-----------|---------------|-----------|-----------------------------|
-| Hero section renders with bespoke typography and coffee-shop palette | Design, Originality | 7 | Playwright navigates to /; screenshot saved; visual review |
-| Menu list shows 5+ items from data source | Functionality | 7 | Playwright navigates to /menu; asserts ≥5 list items |
-| No console errors on initial load | Craft | 7 | Playwright opens /; reads browser console |
-| Page load < 2s on local dev | Craft | 7 | Playwright measures navigation timing |
-
-## Verification method
-Concrete, runnable steps the Evaluator will execute. No "check it works" — actual commands, URLs, and expected states.
-
-1. `pnpm dev` — dev server on http://localhost:3000
-2. Playwright visits http://localhost:3000 → screenshot `hero.png`
-3. Playwright visits http://localhost:3000/menu → screenshot `menu.png` → assert ≥5 `<li>`
-4. Playwright reads console → assert zero errors
-5. Navigation timing → assert DOMContentLoaded < 2000ms
-
-## Thresholds
-- Default per criterion: 7/10
-- Overrides: Originality ≥ 8 (spec demands a strong identity)
-
-## Signatures
-- Generator: [ ]  (sign with ✅ when draft is ready)
-- Evaluator: [ ]  (sign with ✅ after reviewing)
+```yaml
+---
+run_id: <run-id>
+artifact: contract
+sprint: 1
+status: drafted
+quality_profile: ui
+execution_mode: full-loop
+delivery_mode: single-pass
+git_mode: commit-mode
+strategic_decision: initial
+negotiation_round: 1
+generator_signed: false
+evaluator_signed: false
+created_at: 2026-04-22T15:30:00Z
+updated_at: 2026-04-22T15:30:00Z
+---
 ```
 
-## How to negotiate
+## Body Template
 
-- Generator fills in everything except the Evaluator signature.
-- Controller dispatches Evaluator in `REVIEW_CONTRACT` mode.
-- If Evaluator responds CHANGES_REQUESTED, Generator updates the contract and re-submits. Max 3 negotiation rounds — if they can't agree, escalate to the user via `AskUserQuestion`.
-- Once both signed, the contract is frozen for this sprint. Neither role may edit it mid-sprint. If reality forces a change, the sprint is aborted and a new contract drafted.
+```markdown
+# Sprint 1 Contract
 
-## What makes a good contract
+## Strategic decision
+One of `initial`, `refine`, or `pivot`.
 
-- **Scope is cohesive** — a contract describing unrelated features is a sign the sprint is too big.
-- **Every criterion is automatable or visually checkable** — "feels premium" is not a criterion; "hero uses a display font from the allowed list AND saturation of accent color ≥ 0.6" is.
-- **Verification steps match criteria 1:1** — the Evaluator should never have to improvise how to check something.
-- **Out-of-scope is populated** — explicitly listing what won't be built protects the Generator from being dinged on things the contract didn't promise.
+If `pivot`, explain in 2-3 sentences:
+
+- why the last direction failed
+- what is changing now
+- what evidence would prove the pivot worked
+
+## Scope
+
+- [user-visible outcome 1]
+- [user-visible outcome 2]
+- [user-visible outcome 3]
+
+## Out of scope
+
+- [deferred item 1]
+- [deferred item 2]
+
+## Criteria
+
+| Criterion ID | Criterion | Rubric dimension | Threshold | Evidence type | Verification method |
+|--------------|-----------|------------------|-----------|---------------|---------------------|
+| hero-identity | Hero establishes a distinct brand identity | Originality | 8 | screenshot, manual_observation | Playwright opens `/`, captures `hero.png`, evaluator reviews against spec principles |
+| hero-stability | Initial load shows no console errors or major layout shift | Craft | 7 | console_check, screenshot | Playwright loads `/`, records console, compares first and settled render |
+| menu-loads | Menu page renders five data-backed items | Functionality | 7 | screenshot, selector_assertion | Playwright opens `/menu`, asserts at least five visible items |
+
+## Verification checklist
+
+1. Start command:
+   - `pnpm dev`
+2. Target URLs:
+   - `http://localhost:3000/`
+   - `http://localhost:3000/menu`
+3. Assertions:
+   - console has zero errors on initial load
+   - selectors in criteria table are reachable
+   - screenshots are saved under `screenshots/`
+4. Fallback behavior:
+   - if a required tool is unavailable, the affected criterion becomes `UNVERIFIED`
+
+## Known constraints
+
+- [constraint that may affect implementation or evaluation]
+
+## Signatures
+
+- Generator: [ ]
+- Evaluator: [ ]
+```
+
+## Contract Rules
+
+- `Scope` must be cohesive.
+- `Out of scope` must never be empty.
+- Every criterion must map to a valid dimension in the active profile rubric.
+- Every criterion must name at least one evidence type.
+- Every criterion must have a concrete verification method.
+- Thresholds may be raised per criterion, never lowered below the profile default.
+
+## Negotiation Limit
+
+Maximum 3 rounds. After that, the controller must escalate to the user instead of silently watering down the contract.

@@ -1,72 +1,168 @@
 # gen-eval-loop
 
-A Claude Code plugin that implements a **Planner → Generator → Evaluator** loop inspired by GANs. It enforces a strict separation between the role that builds and the role that verifies, using negotiated sprint contracts and live evaluation (Playwright MCP).
+An AI quality system for ambitious deliverables. Instead of letting one agent build and self-approve, `gen-eval-loop` creates an auditable run with a spec, signed contract, evidence, scorecard, and final summary.
 
-## Why
+## What This Is
 
-LLMs are unreliable at grading their own work — they tend to praise mediocre output. The fix is the same one GANs use: a generator and a discriminator running in isolated sessions, competing through a concrete rubric with a hard threshold.
+`gen-eval-loop` is a Claude Code plugin for work where "looks good", "feels polished", or "behaves robustly" matters more than a single unit test going green.
+
+It is not a builder framework. It is a **quality gate** for AI work.
+
+The core idea is simple:
+
+1. A Planner turns the request into a quality spec.
+2. A Generator proposes scope and implements it.
+3. An Evaluator verifies with evidence and decides PASS or FAIL.
+4. The controller enforces state transitions so no stage can be skipped casually.
+
+## Why It Exists
+
+LLMs are unreliable judges of their own output. They over-score weak work, hide uncertainty, and drift into "close enough".
+
+This plugin counters that by requiring:
+
+- explicit quality criteria before implementation
+- separation between build and verification
+- evidence per criterion before PASS
+- a run history that can be resumed or audited
+
+## Core Concepts
+
+### Run
+
+Every invocation creates a `run_id` and writes artefacts under that namespace.
+
+Example:
+
+```text
+docs/gen-eval/coffee-roaster-homepage-20260422-1530/
+.gen-eval/coffee-roaster-homepage-20260422-1530/
+```
+
+### Quality Profile
+
+The controller chooses one active profile per run:
+
+- `ui` - polished interfaces, landing pages, visual products
+- `backend` - APIs, services, integrations, data workflows
+- `agentic` - tool-using agents, long-running workflows, automation
+- `content` - high-stakes written outputs where structure and grounding matter
+
+Each profile has its own rubric. The controller must not reuse UI criteria for backend or agentic work.
+
+### Execution Mode
+
+- `full-loop` - plan, contract, build, evaluate, summarize
+- `plan-only` - produce spec and signed contract, stop before implementation
+- `evaluate-only` - score an existing implementation against a contract or explicit acceptance criteria
+
+### Delivery Mode
+
+The loop also adapts to model strength:
+
+- `single-pass` - stronger models, larger sprints, lower orchestration overhead
+- `short-sprint` - weaker models, tighter slices, faster feedback
+
+See [skills/gen-eval-loop/model-adaptation.md](skills/gen-eval-loop/model-adaptation.md).
+
+### Evidence Gate
+
+A sprint cannot PASS unless every scored criterion has evidence attached in `.gen-eval/<run-id>/sprint-N/evidence.json`.
 
 ## Installation
 
-1. Clone or copy this directory anywhere on disk (e.g. `./plugins/gen-eval-loop` relative to your project, or a shared tools folder).
-2. Register the plugin in your `~/.claude/settings.json`, pointing to its absolute path:
+1. Clone or copy this directory anywhere on disk.
+2. Register the plugin in your `~/.claude/settings.json` with its absolute path:
+
    ```json
    {
      "plugins": ["/absolute/path/to/gen-eval-loop"]
    }
    ```
-   Alternatively, load it from the `/plugin` menu inside Claude Code and select the local directory.
-3. Recommended: have the **Playwright MCP server** active so the Evaluator can perform real clicks, navigations, and screenshots. Without it, the Evaluator falls back to static code review and will warn once.
+
+3. Recommended for `ui` runs: enable the Playwright MCP server so the Evaluator can capture real browser evidence.
 
 ## Usage
 
-Two ways to invoke it:
+Invoke the slash command with the deliverable you want quality-gated:
 
-**Explicit slash command:**
+```text
+/gen-eval build a premium homepage for a fictional specialty coffee roaster
 ```
-/gen-eval build a landing page for a fictional specialty coffee roaster
+
+The controller will:
+
+1. create a new run id
+2. choose `execution_mode`, `quality_profile`, `delivery_mode`, and `git_mode`
+3. write a run-scoped spec
+4. negotiate a signed sprint contract
+5. implement and evaluate against that contract
+6. emit evidence, scorecards, and a final summary
+
+## Run Layout
+
+```text
+<repo-root>/
+|-- docs/
+|   `-- gen-eval/
+|       `-- <run-id>/
+|           |-- spec.md
+|           `-- summary.md
+`-- .gen-eval/
+    `-- <run-id>/
+        |-- state.json
+        `-- sprint-1/
+            |-- contract.md
+            |-- report.md
+            |-- score.md
+            |-- evidence.json
+            `-- screenshots/
 ```
 
-**Description-based discovery:** describe an ambitious deliverable and Claude Code will activate the skill automatically when the request matches its `description`.
+## Git Modes
 
-## What it produces
+- `commit-mode` - the Generator must create commits and the Evaluator reviews diffs by commit.
+- `workspace-mode` - use when auto-commits are not appropriate; the Evaluator reviews changed files and records the limitation.
 
-- `docs/gen-eval/spec.md` — Planner's ambitious product spec.
-- `.gen-eval/sprint-N/contract.md` — contract signed by Generator and Evaluator before any code is written.
-- `.gen-eval/sprint-N/report.md` — Generator's status after implementation.
-- `.gen-eval/sprint-N/score.md` — 0–10 scores per rubric dimension plus PASS/FAIL verdict.
-- `.gen-eval/sprint-N/screenshots/` — visual evidence captured by the Evaluator.
+## When To Use It
 
-Commit `docs/gen-eval/` alongside your code. Add `.gen-eval/` to `.gitignore` by default.
+- ambitious UI or product work with a subjective quality bar
+- agentic features where behavior quality is fuzzy
+- backend work that needs explicit reliability and operability checks
+- situations where you want an auditable AI delivery process
 
-## Structure
+## When Not To Use It
 
-```
+- tiny bug fixes
+- purely mechanical refactors
+- disposable scripts
+- tasks where a single binary test already captures success
+
+## Repository Structure
+
+```text
 gen-eval-loop/
-├── .claude-plugin/plugin.json
-├── commands/gen-eval.md
-└── skills/gen-eval-loop/
-    ├── SKILL.md
-    ├── planner-prompt.md
-    ├── generator-prompt.md
-    ├── evaluator-prompt.md
-    ├── sprint-contract-template.md
-    ├── scoring-rubric.md
-    ├── file-communication-layout.md
-    └── model-adaptation.md
+|-- .claude-plugin/plugin.json
+|-- commands/gen-eval.md
+`-- skills/gen-eval-loop/
+    |-- SKILL.md
+    |-- artifact-schema.md
+    |-- state-machine.md
+    |-- file-communication-layout.md
+    |-- model-adaptation.md
+    |-- planner-prompt.md
+    |-- generator-prompt.md
+    |-- evaluator-prompt.md
+    |-- sprint-contract-template.md
+    |-- run-summary-template.md
+    |-- scoring-rubric.md
+    `-- profiles/
+        |-- ui/rubric.md
+        |-- backend/rubric.md
+        |-- agentic/rubric.md
+        `-- content/rubric.md
 ```
 
-## Model adaptation
+## Current Scope
 
-The loop picks a mode based on the current model:
-
-- **Opus-tier (Opus 4.6, 4.7, newer):** `single-pass` — one spec, one large contract, one exhaustive evaluation. Cap: 5 iterations.
-- **Sonnet-tier and older (Sonnet 4.6, legacy):** `short-sprint` — cohesive slices of 3–5 files, evaluated after each. Cap: 15 iterations.
-
-Unknown models default to `short-sprint` (safer).
-
-## When NOT to use it
-
-- Short bugfixes.
-- Mechanical tasks with a clear, objective spec (use `subagent-driven-development` instead).
-- Refactors without subjective quality criteria.
+This refactor makes the plugin much stronger as an AI quality system, but the system is still prompt-driven. The main enforcement mechanism is now procedural and artefact-based rather than pure free-form instruction, yet it still depends on the controller following the gates defined in the skill.
