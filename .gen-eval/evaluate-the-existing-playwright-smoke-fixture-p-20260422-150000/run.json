@@ -1,0 +1,35 @@
+{
+  "runId": "evaluate-the-existing-playwright-smoke-fixture-p-20260422-150000",
+  "requestPrompt": "Evaluate the existing Playwright smoke fixture page served over local HTTP. The objective is to verify that / loads, the headline 'Evidence runner ready' is visible, and the console has no errors or warnings. Use relative URLs only, assume the controller provides the local server, and do not invent extra product requirements or code changes.",
+  "status": "completed",
+  "qualityProfile": "ui",
+  "executionMode": "full-loop",
+  "deliveryMode": "single-pass",
+  "gitMode": "workspace-mode",
+  "model": "claude-sonnet-4-5",
+  "playwrightAvailable": true,
+  "currentSprint": 1,
+  "sprintCap": 5,
+  "lastCompletedState": "completed",
+  "createdAt": "2026-04-22T15:00:00.638Z",
+  "updatedAt": "2026-04-22T15:03:37.287Z",
+  "sprints": [
+    {
+      "sprint": 1,
+      "decision": "initial",
+      "state": "evaluated",
+      "verdict": "PASS",
+      "failedCriteria": [],
+      "artifactPaths": {
+        "contractJson": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\evaluate-the-existing-playwright-smoke-fixture-p-20260422-150000\\sprint-1\\contract.json",
+        "reportJson": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\evaluate-the-existing-playwright-smoke-fixture-p-20260422-150000\\sprint-1\\report.json",
+        "scoreJson": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\evaluate-the-existing-playwright-smoke-fixture-p-20260422-150000\\sprint-1\\score.json",
+        "evidenceJson": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\evaluate-the-existing-playwright-smoke-fixture-p-20260422-150000\\sprint-1\\evidence.json",
+        "screenshotsDir": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\evaluate-the-existing-playwright-smoke-fixture-p-20260422-150000\\sprint-1\\screenshots",
+        "contractMarkdown": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\evaluate-the-existing-playwright-smoke-fixture-p-20260422-150000\\sprint-1\\contract.md",
+        "reportMarkdown": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\evaluate-the-existing-playwright-smoke-fixture-p-20260422-150000\\sprint-1\\report.md",
+        "scoreMarkdown": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\evaluate-the-existing-playwright-smoke-fixture-p-20260422-150000\\sprint-1\\score.md"
+      }
+    }
+  ]
+}

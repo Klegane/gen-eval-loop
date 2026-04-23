@@ -1,0 +1,57 @@
+{
+  "runId": "evaluate-the-existing-playwright-smoke-fixture-p-20260422-150000",
+  "sprint": 1,
+  "evaluationMode": "live",
+  "criteria": [
+    {
+      "criterionId": "load-success",
+      "status": "PASS",
+      "evidence": [
+        {
+          "type": "screenshot",
+          "path": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\evaluate-the-existing-playwright-smoke-fixture-p-20260422-150000\\sprint-1\\screenshots\\smoke-fixture-loaded.png",
+          "note": "Captured screenshot smoke-fixture-loaded.png."
+        }
+      ]
+    },
+    {
+      "criterionId": "headline-visible",
+      "status": "PASS",
+      "evidence": [
+        {
+          "type": "selector_assertion",
+          "value": "{\"selector\":\"text=Evidence runner ready\",\"count\":1,\"minCount\":1,\"maxCount\":1}",
+          "note": "Selector assertion passed for text=Evidence runner ready."
+        },
+        {
+          "type": "screenshot",
+          "path": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\evaluate-the-existing-playwright-smoke-fixture-p-20260422-150000\\sprint-1\\screenshots\\headline-visible.png",
+          "note": "Captured screenshot headline-visible.png."
+        }
+      ]
+    },
+    {
+      "criterionId": "console-no-errors",
+      "status": "PASS",
+      "evidence": [
+        {
+          "type": "console_check",
+          "value": "{\"level\":\"error\",\"matches\":0}",
+          "note": "No disallowed console error messages detected."
+        }
+      ]
+    },
+    {
+      "criterionId": "console-no-warnings",
+      "status": "PASS",
+      "evidence": [
+        {
+          "type": "console_check",
+          "value": "{\"level\":\"warning\",\"matches\":0}",
+          "note": "No disallowed console warning messages detected."
+        }
+      ]
+    }
+  ],
+  "infraFailures": []
+}

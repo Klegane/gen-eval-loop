@@ -1,0 +1,87 @@
+{
+  "runId": "resume-smoke-20260422-112926",
+  "artifact": "summary",
+  "qualityProfile": "ui",
+  "executionMode": "full-loop",
+  "deliveryMode": "single-pass",
+  "gitMode": "workspace-mode",
+  "model": "runtime-dev",
+  "status": "completed",
+  "finalVerdict": "CAPPED",
+  "totalSprints": 5,
+  "createdAt": "2026-04-22T11:29:26.232Z",
+  "updatedAt": "2026-04-22T11:29:29.973Z",
+  "requestSummary": "resume smoke",
+  "sprintHistory": [
+    {
+      "sprint": 1,
+      "decision": "initial",
+      "verdict": "INFRA_FAIL",
+      "failedDimensions": [
+        "criterion-1",
+        "criterion-2"
+      ],
+      "notes": [
+        "Infrastructure prevented full verification."
+      ]
+    },
+    {
+      "sprint": 2,
+      "decision": "refine",
+      "verdict": "INFRA_FAIL",
+      "failedDimensions": [
+        "criterion-1",
+        "criterion-2"
+      ],
+      "notes": [
+        "Infrastructure prevented full verification."
+      ]
+    },
+    {
+      "sprint": 3,
+      "decision": "refine",
+      "verdict": "INFRA_FAIL",
+      "failedDimensions": [
+        "criterion-1",
+        "criterion-2"
+      ],
+      "notes": [
+        "Infrastructure prevented full verification."
+      ]
+    },
+    {
+      "sprint": 4,
+      "decision": "refine",
+      "verdict": "INFRA_FAIL",
+      "failedDimensions": [
+        "criterion-1",
+        "criterion-2"
+      ],
+      "notes": [
+        "Infrastructure prevented full verification."
+      ]
+    },
+    {
+      "sprint": 5,
+      "decision": "refine",
+      "verdict": "INFRA_FAIL",
+      "failedDimensions": [
+        "criterion-1",
+        "criterion-2"
+      ],
+      "notes": [
+        "Infrastructure prevented full verification."
+      ]
+    }
+  ],
+  "finalVerdictReason": "Infrastructure failure: browserType.launch: Executable doesn't exist at C:\\Users\\eriks\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1217\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔════════════════════════════════════════════════════════════╗\n║ Looks like Playwright was just installed or updated.       ║\n║ Please run the following command to download new browsers: ║\n║                                                            ║\n║     npx playwright install                                 ║\n║                                                            ║\n║ <3 Playwright Team                                         ║\n╚════════════════════════════════════════════════════════════╝",
+  "strongestEvidence": [],
+  "residualRisks": [
+    "Infrastructure failure: browserType.launch: Executable doesn't exist at C:\\Users\\eriks\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1217\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔════════════════════════════════════════════════════════════╗\n║ Looks like Playwright was just installed or updated.       ║\n║ Please run the following command to download new browsers: ║\n║                                                            ║\n║     npx playwright install                                 ║\n║                                                            ║\n║ <3 Playwright Team                                         ║\n╚════════════════════════════════════════════════════════════╝",
+    "Criterion criterion-1 remained unverified.",
+    "Criterion criterion-2 remained unverified.",
+    "No live evidence confirmed criterion-1.",
+    "No live evidence confirmed criterion-2."
+  ],
+  "recommendedNextStep": "Review the repeated failures, narrow scope, and start a fresh run with a tighter contract."
+}

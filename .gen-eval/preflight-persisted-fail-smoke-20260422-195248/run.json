@@ -1,0 +1,84 @@
+{
+  "runId": "preflight-persisted-fail-smoke-20260422-195248",
+  "requestPrompt": "preflight persisted fail smoke",
+  "status": "initialized",
+  "qualityProfile": "ui",
+  "executionMode": "full-loop",
+  "deliveryMode": "single-pass",
+  "gitMode": "workspace-mode",
+  "model": "runtime-dev",
+  "playwrightAvailable": true,
+  "currentSprint": 0,
+  "sprintCap": 5,
+  "lastCompletedState": "initialized",
+  "createdAt": "2026-04-22T19:52:48.891Z",
+  "updatedAt": "2026-04-22T19:52:48.906Z",
+  "preflightHistory": [
+    {
+      "status": "FAIL",
+      "provider": "development",
+      "profile": "ui",
+      "model": "runtime-dev",
+      "runtimeHealth": {
+        "generatedAt": "2026-04-22T19:52:48.906Z",
+        "provider": "development",
+        "profile": "ui",
+        "overallStatus": "FAIL",
+        "checks": [
+          {
+            "id": "env-file",
+            "status": "PASS",
+            "summary": ".env file found in runtime root.",
+            "details": [
+              "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\runtime\\.env"
+            ],
+            "remediation": []
+          },
+          {
+            "id": "provider-config",
+            "status": "PASS",
+            "summary": "Development adapter requires no external credentials.",
+            "details": [],
+            "remediation": []
+          },
+          {
+            "id": "adapter-instantiation",
+            "status": "PASS",
+            "summary": "Adapter development instantiated successfully.",
+            "details": [],
+            "remediation": []
+          },
+          {
+            "id": "playwright-binary",
+            "status": "PASS",
+            "summary": "Playwright Chromium executable is present.",
+            "details": [
+              "C:\\Users\\eriks\\AppData\\Local\\ms-playwright\\chromium-1217\\chrome-win64\\chrome.exe"
+            ],
+            "remediation": []
+          },
+          {
+            "id": "chromium-launch",
+            "status": "FAIL",
+            "summary": "Chromium launch failed.",
+            "details": [
+              "browserType.launch: spawn EPERM\nCall log:\n\u001b[2m  - <launching> C:\\Users\\eriks\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1217\\chrome-headless-shell-win64\\chrome-headless-shell.exe --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,Translate,AutoDeElevate,RenderDocument,OptimizationHints --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --enable-automation --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --user-data-dir=C:\\Users\\eriks\\AppData\\Local\\Temp\\playwright_chromiumdev_profile-QH4YES --remote-debugging-pipe --no-startup-window\u001b[22m\n"
+            ],
+            "remediation": [
+              "Run the health check or Playwright evidence command with the required permissions outside the sandbox.",
+              "If needed, start the target service outside the sandbox and rerun the browser check."
+            ]
+          }
+        ]
+      },
+      "blockingReasons": [
+        "chromium-launch: Chromium launch failed."
+      ],
+      "remediation": [
+        "Run the health check or Playwright evidence command with the required permissions outside the sandbox.",
+        "If needed, start the target service outside the sandbox and rerun the browser check."
+      ]
+    }
+  ],
+  "sprints": []
+}

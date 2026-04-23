@@ -1,0 +1,58 @@
+{
+  "runId": "evaluate-the-existing-playwright-smoke-fixture-p-20260422-150000",
+  "artifact": "score",
+  "sprint": 1,
+  "evaluationMode": "live",
+  "verdict": "PASS",
+  "createdAt": "2026-04-22T15:03:11Z",
+  "updatedAt": "2026-04-22T15:03:11Z",
+  "criteria": [
+    {
+      "criterionId": "load-success",
+      "dimension": "Functionality",
+      "score": 10,
+      "threshold": 7,
+      "status": "PASS",
+      "evidenceRefs": [
+        "screenshot:smoke-fixture-loaded.png"
+      ]
+    },
+    {
+      "criterionId": "headline-visible",
+      "dimension": "Functionality",
+      "score": 10,
+      "threshold": 7,
+      "status": "PASS",
+      "evidenceRefs": [
+        "selector_assertion:text=Evidence runner ready",
+        "screenshot:headline-visible.png"
+      ]
+    },
+    {
+      "criterionId": "console-no-errors",
+      "dimension": "Craft",
+      "score": 10,
+      "threshold": 7,
+      "status": "PASS",
+      "evidenceRefs": [
+        "console_check:error:0"
+      ]
+    },
+    {
+      "criterionId": "console-no-warnings",
+      "dimension": "Craft",
+      "score": 10,
+      "threshold": 7,
+      "status": "PASS",
+      "evidenceRefs": [
+        "console_check:warning:0"
+      ]
+    }
+  ],
+  "blockingFindings": [],
+  "nonBlockingObservations": [
+    "This is a meta-quality infrastructure check, not a product evaluation. Design Quality and Originality dimensions are not applicable.",
+    "All verification was mechanical and literal as required by the spec."
+  ],
+  "unverifiedClaims": []
+}

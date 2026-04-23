@@ -1,0 +1,20 @@
+{
+  "runId": "full-loop-smoke-20260422-112918",
+  "sprint": 1,
+  "evaluationMode": "static-fallback",
+  "criteria": [
+    {
+      "criterionId": "criterion-1",
+      "status": "UNVERIFIED",
+      "evidence": []
+    },
+    {
+      "criterionId": "criterion-2",
+      "status": "UNVERIFIED",
+      "evidence": []
+    }
+  ],
+  "infraFailures": [
+    "browserType.launch: Executable doesn't exist at C:\\Users\\eriks\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1217\\chrome-headless-shell-win64\\chrome-headless-shell.exe\n╔════════════════════════════════════════════════════════════╗\n║ Looks like Playwright was just installed or updated.       ║\n║ Please run the following command to download new browsers: ║\n║                                                            ║\n║     npx playwright install                                 ║\n║                                                            ║\n║ <3 Playwright Team                                         ║\n╚════════════════════════════════════════════════════════════╝"
+  ]
+}

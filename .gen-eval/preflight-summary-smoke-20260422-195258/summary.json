@@ -1,0 +1,96 @@
+{
+  "runId": "preflight-summary-smoke-20260422-195258",
+  "artifact": "summary",
+  "qualityProfile": "ui",
+  "executionMode": "full-loop",
+  "deliveryMode": "single-pass",
+  "gitMode": "workspace-mode",
+  "model": "runtime-dev",
+  "status": "completed",
+  "finalVerdict": "ABORTED",
+  "totalSprints": 1,
+  "createdAt": "2026-04-22T19:52:58.389Z",
+  "updatedAt": "2026-04-22T19:52:58.429Z",
+  "requestSummary": "preflight summary smoke",
+  "sprintHistory": [
+    {
+      "sprint": 1,
+      "decision": "initial",
+      "verdict": "INFRA_FAIL",
+      "failedDimensions": [
+        "criterion-1",
+        "criterion-2"
+      ],
+      "notes": [
+        "Infrastructure prevented full verification."
+      ]
+    }
+  ],
+  "latestPreflight": {
+    "status": "PASS",
+    "provider": "development",
+    "profile": "ui",
+    "model": "runtime-dev",
+    "runtimeHealth": {
+      "generatedAt": "2026-04-22T19:52:58.394Z",
+      "provider": "development",
+      "profile": "ui",
+      "overallStatus": "WARN",
+      "checks": [
+        {
+          "id": "env-file",
+          "status": "PASS",
+          "summary": ".env file found in runtime root.",
+          "details": [
+            "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\runtime\\.env"
+          ],
+          "remediation": []
+        },
+        {
+          "id": "provider-config",
+          "status": "PASS",
+          "summary": "Development adapter requires no external credentials.",
+          "details": [],
+          "remediation": []
+        },
+        {
+          "id": "adapter-instantiation",
+          "status": "PASS",
+          "summary": "Adapter development instantiated successfully.",
+          "details": [],
+          "remediation": []
+        },
+        {
+          "id": "playwright-binary",
+          "status": "PASS",
+          "summary": "Playwright Chromium executable is present.",
+          "details": [
+            "C:\\Users\\eriks\\AppData\\Local\\ms-playwright\\chromium-1217\\chrome-win64\\chrome.exe"
+          ],
+          "remediation": []
+        },
+        {
+          "id": "playwright-launch",
+          "status": "WARN",
+          "summary": "Chromium launch check skipped by configuration.",
+          "details": [],
+          "remediation": [
+            "Re-run without --skip-browser-launch to verify live browser launch."
+          ]
+        }
+      ]
+    },
+    "blockingReasons": [],
+    "remediation": []
+  },
+  "finalVerdictReason": "The runtime hit a permission or sandbox restriction while starting infrastructure. Retry with the required permissions or run the target service outside the sandbox.",
+  "strongestEvidence": [],
+  "residualRisks": [
+    "The runtime hit a permission or sandbox restriction while starting infrastructure. Retry with the required permissions or run the target service outside the sandbox.",
+    "Criterion criterion-1 remained unverified.",
+    "Criterion criterion-2 remained unverified.",
+    "No live evidence confirmed criterion-1.",
+    "No live evidence confirmed criterion-2."
+  ],
+  "recommendedNextStep": "Decide whether to reopen the run or archive it with its incomplete artefacts."
+}

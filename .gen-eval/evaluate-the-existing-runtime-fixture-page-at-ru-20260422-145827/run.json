@@ -1,0 +1,28 @@
+{
+  "runId": "evaluate-the-existing-runtime-fixture-page-at-ru-20260422-145827",
+  "requestPrompt": "Evaluate the existing runtime fixture page at runtime/fixtures/playwright-smoke/index.html. The goal is a minimal UI quality run that verifies the page loads, the main content is visible, and the console stays clean. Do not request more product context and do not invent extra features.",
+  "status": "contract_drafted",
+  "qualityProfile": "ui",
+  "executionMode": "full-loop",
+  "deliveryMode": "single-pass",
+  "gitMode": "workspace-mode",
+  "model": "claude-sonnet-4-5",
+  "playwrightAvailable": true,
+  "currentSprint": 1,
+  "sprintCap": 5,
+  "lastCompletedState": "contract_drafted",
+  "createdAt": "2026-04-22T14:58:27.405Z",
+  "updatedAt": "2026-04-22T14:58:27Z",
+  "sprints": [
+    {
+      "sprint": 1,
+      "decision": "initial",
+      "state": "contract_drafted",
+      "failedCriteria": [],
+      "artifactPaths": {
+        "contractJson": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\evaluate-the-existing-runtime-fixture-page-at-ru-20260422-145827\\sprint-1\\contract.json",
+        "contractMarkdown": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\evaluate-the-existing-runtime-fixture-page-at-ru-20260422-145827\\sprint-1\\contract.md"
+      }
+    }
+  ]
+}

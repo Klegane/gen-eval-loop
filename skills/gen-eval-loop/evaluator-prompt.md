@@ -21,7 +21,7 @@ Task tool:
     - Contract: .gen-eval/[RUN_ID]/sprint-[N]/contract.md
     - Active rubric: skills/gen-eval-loop/profiles/[PROFILE]/rubric.md
     - Artefact schema: skills/gen-eval-loop/artifact-schema.md
-    - State: .gen-eval/[RUN_ID]/state.json
+    - State: .gen-eval/[RUN_ID]/run.json
     - Generator report (SCORE only): .gen-eval/[RUN_ID]/sprint-[N]/report.md
 
     ## If Mode = REVIEW_CONTRACT

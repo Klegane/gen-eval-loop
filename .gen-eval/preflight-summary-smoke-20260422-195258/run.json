@@ -1,0 +1,97 @@
+{
+  "runId": "preflight-summary-smoke-20260422-195258",
+  "requestPrompt": "preflight summary smoke",
+  "status": "completed",
+  "qualityProfile": "ui",
+  "executionMode": "full-loop",
+  "deliveryMode": "single-pass",
+  "gitMode": "workspace-mode",
+  "model": "runtime-dev",
+  "playwrightAvailable": true,
+  "currentSprint": 1,
+  "sprintCap": 5,
+  "lastCompletedState": "completed",
+  "createdAt": "2026-04-22T19:52:58.389Z",
+  "updatedAt": "2026-04-22T19:52:58.429Z",
+  "preflightHistory": [
+    {
+      "status": "PASS",
+      "provider": "development",
+      "profile": "ui",
+      "model": "runtime-dev",
+      "runtimeHealth": {
+        "generatedAt": "2026-04-22T19:52:58.394Z",
+        "provider": "development",
+        "profile": "ui",
+        "overallStatus": "WARN",
+        "checks": [
+          {
+            "id": "env-file",
+            "status": "PASS",
+            "summary": ".env file found in runtime root.",
+            "details": [
+              "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\runtime\\.env"
+            ],
+            "remediation": []
+          },
+          {
+            "id": "provider-config",
+            "status": "PASS",
+            "summary": "Development adapter requires no external credentials.",
+            "details": [],
+            "remediation": []
+          },
+          {
+            "id": "adapter-instantiation",
+            "status": "PASS",
+            "summary": "Adapter development instantiated successfully.",
+            "details": [],
+            "remediation": []
+          },
+          {
+            "id": "playwright-binary",
+            "status": "PASS",
+            "summary": "Playwright Chromium executable is present.",
+            "details": [
+              "C:\\Users\\eriks\\AppData\\Local\\ms-playwright\\chromium-1217\\chrome-win64\\chrome.exe"
+            ],
+            "remediation": []
+          },
+          {
+            "id": "playwright-launch",
+            "status": "WARN",
+            "summary": "Chromium launch check skipped by configuration.",
+            "details": [],
+            "remediation": [
+              "Re-run without --skip-browser-launch to verify live browser launch."
+            ]
+          }
+        ]
+      },
+      "blockingReasons": [],
+      "remediation": []
+    }
+  ],
+  "sprints": [
+    {
+      "sprint": 1,
+      "decision": "initial",
+      "state": "evaluated",
+      "verdict": "INFRA_FAIL",
+      "failedCriteria": [
+        "criterion-1",
+        "criterion-2"
+      ],
+      "artifactPaths": {
+        "contractJson": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\preflight-summary-smoke-20260422-195258\\sprint-1\\contract.json",
+        "reportJson": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\preflight-summary-smoke-20260422-195258\\sprint-1\\report.json",
+        "scoreJson": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\preflight-summary-smoke-20260422-195258\\sprint-1\\score.json",
+        "evidenceJson": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\preflight-summary-smoke-20260422-195258\\sprint-1\\evidence.json",
+        "screenshotsDir": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\preflight-summary-smoke-20260422-195258\\sprint-1\\screenshots",
+        "contractMarkdown": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\preflight-summary-smoke-20260422-195258\\sprint-1\\contract.md",
+        "reportMarkdown": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\preflight-summary-smoke-20260422-195258\\sprint-1\\report.md",
+        "scoreMarkdown": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\preflight-summary-smoke-20260422-195258\\sprint-1\\score.md"
+      }
+    }
+  ]
+}

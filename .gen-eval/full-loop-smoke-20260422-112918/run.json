@@ -1,0 +1,118 @@
+{
+  "runId": "full-loop-smoke-20260422-112918",
+  "requestPrompt": "full loop smoke",
+  "status": "completed",
+  "qualityProfile": "ui",
+  "executionMode": "full-loop",
+  "deliveryMode": "single-pass",
+  "gitMode": "workspace-mode",
+  "model": "runtime-dev",
+  "playwrightAvailable": true,
+  "currentSprint": 5,
+  "sprintCap": 5,
+  "lastCompletedState": "completed",
+  "createdAt": "2026-04-22T11:29:18.342Z",
+  "updatedAt": "2026-04-22T11:29:18.434Z",
+  "sprints": [
+    {
+      "sprint": 1,
+      "decision": "initial",
+      "state": "evaluated",
+      "verdict": "INFRA_FAIL",
+      "failedCriteria": [
+        "criterion-1",
+        "criterion-2"
+      ],
+      "artifactPaths": {
+        "contractJson": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\full-loop-smoke-20260422-112918\\sprint-1\\contract.json",
+        "reportJson": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\full-loop-smoke-20260422-112918\\sprint-1\\report.json",
+        "scoreJson": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\full-loop-smoke-20260422-112918\\sprint-1\\score.json",
+        "evidenceJson": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\full-loop-smoke-20260422-112918\\sprint-1\\evidence.json",
+        "screenshotsDir": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\full-loop-smoke-20260422-112918\\sprint-1\\screenshots",
+        "contractMarkdown": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\full-loop-smoke-20260422-112918\\sprint-1\\contract.md",
+        "reportMarkdown": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\full-loop-smoke-20260422-112918\\sprint-1\\report.md",
+        "scoreMarkdown": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\full-loop-smoke-20260422-112918\\sprint-1\\score.md"
+      }
+    },
+    {
+      "sprint": 2,
+      "decision": "refine",
+      "state": "evaluated",
+      "verdict": "INFRA_FAIL",
+      "failedCriteria": [
+        "criterion-1",
+        "criterion-2"
+      ],
+      "artifactPaths": {
+        "contractJson": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\full-loop-smoke-20260422-112918\\sprint-2\\contract.json",
+        "reportJson": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\full-loop-smoke-20260422-112918\\sprint-2\\report.json",
+        "scoreJson": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\full-loop-smoke-20260422-112918\\sprint-2\\score.json",
+        "evidenceJson": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\full-loop-smoke-20260422-112918\\sprint-2\\evidence.json",
+        "screenshotsDir": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\full-loop-smoke-20260422-112918\\sprint-2\\screenshots",
+        "contractMarkdown": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\full-loop-smoke-20260422-112918\\sprint-2\\contract.md",
+        "reportMarkdown": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\full-loop-smoke-20260422-112918\\sprint-2\\report.md",
+        "scoreMarkdown": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\full-loop-smoke-20260422-112918\\sprint-2\\score.md"
+      }
+    },
+    {
+      "sprint": 3,
+      "decision": "refine",
+      "state": "evaluated",
+      "verdict": "INFRA_FAIL",
+      "failedCriteria": [
+        "criterion-1",
+        "criterion-2"
+      ],
+      "artifactPaths": {
+        "contractJson": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\full-loop-smoke-20260422-112918\\sprint-3\\contract.json",
+        "reportJson": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\full-loop-smoke-20260422-112918\\sprint-3\\report.json",
+        "scoreJson": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\full-loop-smoke-20260422-112918\\sprint-3\\score.json",
+        "evidenceJson": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\full-loop-smoke-20260422-112918\\sprint-3\\evidence.json",
+        "screenshotsDir": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\full-loop-smoke-20260422-112918\\sprint-3\\screenshots",
+        "contractMarkdown": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\full-loop-smoke-20260422-112918\\sprint-3\\contract.md",
+        "reportMarkdown": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\full-loop-smoke-20260422-112918\\sprint-3\\report.md",
+        "scoreMarkdown": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\full-loop-smoke-20260422-112918\\sprint-3\\score.md"
+      }
+    },
+    {
+      "sprint": 4,
+      "decision": "refine",
+      "state": "evaluated",
+      "verdict": "INFRA_FAIL",
+      "failedCriteria": [
+        "criterion-1",
+        "criterion-2"
+      ],
+      "artifactPaths": {
+        "contractJson": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\full-loop-smoke-20260422-112918\\sprint-4\\contract.json",
+        "reportJson": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\full-loop-smoke-20260422-112918\\sprint-4\\report.json",
+        "scoreJson": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\full-loop-smoke-20260422-112918\\sprint-4\\score.json",
+        "evidenceJson": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\full-loop-smoke-20260422-112918\\sprint-4\\evidence.json",
+        "screenshotsDir": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\full-loop-smoke-20260422-112918\\sprint-4\\screenshots",
+        "contractMarkdown": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\full-loop-smoke-20260422-112918\\sprint-4\\contract.md",
+        "reportMarkdown": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\full-loop-smoke-20260422-112918\\sprint-4\\report.md",
+        "scoreMarkdown": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\full-loop-smoke-20260422-112918\\sprint-4\\score.md"
+      }
+    },
+    {
+      "sprint": 5,
+      "decision": "refine",
+      "state": "evaluated",
+      "verdict": "INFRA_FAIL",
+      "failedCriteria": [
+        "criterion-1",
+        "criterion-2"
+      ],
+      "artifactPaths": {
+        "contractJson": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\full-loop-smoke-20260422-112918\\sprint-5\\contract.json",
+        "reportJson": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\full-loop-smoke-20260422-112918\\sprint-5\\report.json",
+        "scoreJson": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\full-loop-smoke-20260422-112918\\sprint-5\\score.json",
+        "evidenceJson": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\full-loop-smoke-20260422-112918\\sprint-5\\evidence.json",
+        "screenshotsDir": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\full-loop-smoke-20260422-112918\\sprint-5\\screenshots",
+        "contractMarkdown": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\full-loop-smoke-20260422-112918\\sprint-5\\contract.md",
+        "reportMarkdown": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\full-loop-smoke-20260422-112918\\sprint-5\\report.md",
+        "scoreMarkdown": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\full-loop-smoke-20260422-112918\\sprint-5\\score.md"
+      }
+    }
+  ]
+}

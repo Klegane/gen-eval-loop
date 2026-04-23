@@ -1,0 +1,37 @@
+{
+  "runId": "role-pipeline-smoke-20260422-111949",
+  "status": "failed",
+  "qualityProfile": "ui",
+  "executionMode": "full-loop",
+  "deliveryMode": "single-pass",
+  "gitMode": "workspace-mode",
+  "model": "runtime-dev",
+  "playwrightAvailable": true,
+  "currentSprint": 1,
+  "sprintCap": 5,
+  "lastCompletedState": "failed",
+  "createdAt": "2026-04-22T11:19:49.831Z",
+  "updatedAt": "2026-04-22T11:20:13.033Z",
+  "sprints": [
+    {
+      "sprint": 1,
+      "decision": "initial",
+      "state": "evaluated",
+      "verdict": "INFRA_FAIL",
+      "failedCriteria": [
+        "criterion-1",
+        "criterion-2"
+      ],
+      "artifactPaths": {
+        "contractJson": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\role-pipeline-smoke-20260422-111949\\sprint-1\\contract.json",
+        "reportJson": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\role-pipeline-smoke-20260422-111949\\sprint-1\\report.json",
+        "scoreJson": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\role-pipeline-smoke-20260422-111949\\sprint-1\\score.json",
+        "evidenceJson": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\role-pipeline-smoke-20260422-111949\\sprint-1\\evidence.json",
+        "screenshotsDir": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\role-pipeline-smoke-20260422-111949\\sprint-1\\screenshots",
+        "contractMarkdown": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\role-pipeline-smoke-20260422-111949\\sprint-1\\contract.md",
+        "reportMarkdown": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\role-pipeline-smoke-20260422-111949\\sprint-1\\report.md",
+        "scoreMarkdown": "C:\\Users\\eriks\\Projects\\claude-best-practices\\gen-eval-loop\\.gen-eval\\role-pipeline-smoke-20260422-111949\\sprint-1\\score.md"
+      }
+    }
+  ]
+}

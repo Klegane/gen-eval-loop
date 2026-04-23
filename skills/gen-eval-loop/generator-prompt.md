@@ -21,7 +21,7 @@ Task tool:
     - Active rubric: skills/gen-eval-loop/profiles/[PROFILE]/rubric.md
     - Artefact schema: skills/gen-eval-loop/artifact-schema.md
     - Contract template: skills/gen-eval-loop/sprint-contract-template.md
-    - State: .gen-eval/[RUN_ID]/state.json
+    - State: .gen-eval/[RUN_ID]/run.json
     - Current sprint path: .gen-eval/[RUN_ID]/sprint-[N]/
     - Previous score if N > 1: .gen-eval/[RUN_ID]/sprint-[N-1]/score.md
     - Previous evidence if N > 1: .gen-eval/[RUN_ID]/sprint-[N-1]/evidence.json

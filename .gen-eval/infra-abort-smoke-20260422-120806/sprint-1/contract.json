@@ -1,0 +1,105 @@
+{
+  "runId": "infra-abort-smoke-20260422-120806",
+  "artifact": "contract",
+  "sprint": 1,
+  "qualityProfile": "ui",
+  "executionMode": "full-loop",
+  "deliveryMode": "single-pass",
+  "gitMode": "workspace-mode",
+  "status": "signed",
+  "decision": "initial",
+  "negotiationRound": 1,
+  "generatorSigned": true,
+  "evaluatorSigned": true,
+  "createdAt": "2026-04-22T12:08:06.695Z",
+  "updatedAt": "2026-04-22T12:08:06.700Z",
+  "scope": [
+    "Satisfy the primary request: infra abort smoke"
+  ],
+  "outOfScope": [
+    "Any requirement not implied by the request, active profile, or repository environment."
+  ],
+  "criteria": [
+    {
+      "id": "criterion-1",
+      "label": "A sprint contract can be drafted from this spec without inventing hidden requirements.",
+      "dimension": "Design Quality",
+      "threshold": 7,
+      "evidenceTypes": [
+        "screenshot",
+        "console_check"
+      ],
+      "verificationSteps": [
+        "Verify criterion 1: A sprint contract can be drafted from this spec without inventing hidden requirements."
+      ],
+      "playwright": {
+        "steps": [
+          {
+            "type": "goto",
+            "url": "/",
+            "waitUntil": "load"
+          },
+          {
+            "type": "waitForSelector",
+            "selector": "body",
+            "state": "visible",
+            "timeoutMs": 10000
+          },
+          {
+            "type": "screenshot",
+            "name": "criterion-1.png",
+            "fullPage": true
+          },
+          {
+            "type": "checkConsole",
+            "level": "error"
+          }
+        ]
+      }
+    },
+    {
+      "id": "criterion-2",
+      "label": "The evaluator can derive concrete checks from the spec's quality intent and scope.",
+      "dimension": "Functionality",
+      "threshold": 7,
+      "evidenceTypes": [
+        "selector_assertion",
+        "console_check"
+      ],
+      "verificationSteps": [
+        "Verify criterion 2: The evaluator can derive concrete checks from the spec's quality intent and scope."
+      ],
+      "playwright": {
+        "steps": [
+          {
+            "type": "goto",
+            "url": "/",
+            "waitUntil": "load"
+          },
+          {
+            "type": "waitForSelector",
+            "selector": "body",
+            "state": "visible",
+            "timeoutMs": 10000
+          },
+          {
+            "type": "assertSelector",
+            "selector": "body",
+            "minCount": 1
+          },
+          {
+            "type": "checkConsole",
+            "level": "error"
+          }
+        ]
+      }
+    }
+  ],
+  "verificationChecklist": [
+    "Confirm the implementation is reachable in the local environment.",
+    "Validate every criterion with at least one evidence source."
+  ],
+  "knownConstraints": [
+    "Only constraints implied by the request or environment should be treated as mandatory."
+  ]
+}

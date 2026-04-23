@@ -1,0 +1,36 @@
+{
+  "runId": "evaluate-the-existing-playwright-smoke-fixture-p-20260422-150000",
+  "artifact": "summary",
+  "qualityProfile": "ui",
+  "executionMode": "full-loop",
+  "deliveryMode": "single-pass",
+  "gitMode": "workspace-mode",
+  "model": "claude-sonnet-4-5",
+  "status": "completed",
+  "finalVerdict": "PASS",
+  "totalSprints": 1,
+  "createdAt": "2026-04-22T15:00:00.638Z",
+  "updatedAt": "2026-04-22T15:03:37.287Z",
+  "requestSummary": "Evaluate the existing Playwright smoke fixture page served over local HTTP. The objective is to verify that / loads, the headline 'Evidence runner ready' is visible, and the console has no errors or warnings. Use relative URLs only, assume the controller provides the local server, and do not invent extra product requirements or code changes.",
+  "sprintHistory": [
+    {
+      "sprint": 1,
+      "decision": "initial",
+      "verdict": "PASS",
+      "failedDimensions": [],
+      "notes": [
+        "Sprint met contracted thresholds."
+      ]
+    }
+  ],
+  "finalVerdictReason": "The run met the quality bar with evidence-backed passing criteria.",
+  "strongestEvidence": [
+    "Captured screenshot smoke-fixture-loaded.png.",
+    "Selector assertion passed for text=Evidence runner ready.",
+    "Captured screenshot headline-visible.png.",
+    "No disallowed console error messages detected.",
+    "No disallowed console warning messages detected."
+  ],
+  "residualRisks": [],
+  "recommendedNextStep": "Promote the passing artefacts or implementation to the next workflow stage."
+}

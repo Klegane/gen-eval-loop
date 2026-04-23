@@ -1,0 +1,226 @@
+{
+  "runId": "evaluate-the-existing-runtime-fixture-page-at-ru-20260422-145827",
+  "artifact": "contract",
+  "sprint": 1,
+  "qualityProfile": "ui",
+  "executionMode": "full-loop",
+  "deliveryMode": "single-pass",
+  "gitMode": "workspace-mode",
+  "status": "drafted",
+  "decision": "initial",
+  "negotiationRound": 1,
+  "generatorSigned": true,
+  "evaluatorSigned": false,
+  "createdAt": "2026-04-22T14:58:27Z",
+  "updatedAt": "2026-04-22T14:58:27Z",
+  "scope": [
+    "Verify the existing fixture page at runtime/fixtures/playwright-smoke/index.html loads without errors",
+    "Confirm main content is visible and rendered correctly",
+    "Validate console remains clean with no JavaScript errors or warnings",
+    "Check page has a valid document title",
+    "Verify no layout shifts or broken images on initial render"
+  ],
+  "outOfScope": [
+    "Modifying or enhancing the fixture page implementation",
+    "Adding new features or content",
+    "Styling improvements or design changes",
+    "Testing dynamic behavior or user interactions beyond initial load",
+    "Evaluating navigation or multi-page flows"
+  ],
+  "criteria": [
+    {
+      "id": "page-loads-clean",
+      "label": "Page loads with HTTP 200 and no network errors",
+      "dimension": "Functionality",
+      "threshold": 7,
+      "evidenceTypes": [
+        "screenshot",
+        "console_check"
+      ],
+      "verificationSteps": [
+        "Navigate to the fixture page using Playwright",
+        "Verify HTTP response status is 200",
+        "Check console for network errors",
+        "Capture screenshot of loaded state"
+      ],
+      "playwright": {
+        "steps": [
+          {
+            "type": "goto",
+            "url": "file://runtime/fixtures/playwright-smoke/index.html",
+            "waitUntil": "load"
+          },
+          {
+            "type": "checkConsole",
+            "level": "error"
+          },
+          {
+            "type": "screenshot",
+            "name": "page-loaded",
+            "fullPage": true
+          }
+        ],
+        "stopOnFailure": true
+      }
+    },
+    {
+      "id": "content-visible",
+      "label": "Main content element is present and rendered",
+      "dimension": "Functionality",
+      "threshold": 7,
+      "evidenceTypes": [
+        "selector_assertion",
+        "screenshot"
+      ],
+      "verificationSteps": [
+        "Wait for page load",
+        "Assert at least one main content selector exists",
+        "Verify element is visible",
+        "Capture screenshot showing rendered content"
+      ],
+      "playwright": {
+        "steps": [
+          {
+            "type": "goto",
+            "url": "file://runtime/fixtures/playwright-smoke/index.html",
+            "waitUntil": "load"
+          },
+          {
+            "type": "waitForSelector",
+            "selector": "body",
+            "state": "visible",
+            "timeoutMs": 5000
+          },
+          {
+            "type": "assertSelector",
+            "selector": "body *",
+            "minCount": 1
+          },
+          {
+            "type": "screenshot",
+            "name": "content-visible",
+            "fullPage": true
+          }
+        ],
+        "stopOnFailure": true
+      }
+    },
+    {
+      "id": "console-clean",
+      "label": "Console has zero errors or warnings on initial load",
+      "dimension": "Craft",
+      "threshold": 7,
+      "evidenceTypes": [
+        "console_check"
+      ],
+      "verificationSteps": [
+        "Navigate to page with console monitoring active",
+        "Check for any error-level console messages",
+        "Check for any warning-level console messages",
+        "Report findings"
+      ],
+      "playwright": {
+        "steps": [
+          {
+            "type": "goto",
+            "url": "file://runtime/fixtures/playwright-smoke/index.html",
+            "waitUntil": "domcontentloaded"
+          },
+          {
+            "type": "checkConsole",
+            "level": "error"
+          },
+          {
+            "type": "checkConsole",
+            "level": "warning"
+          }
+        ],
+        "stopOnFailure": false
+      }
+    },
+    {
+      "id": "valid-title",
+      "label": "Page has a non-empty document title",
+      "dimension": "Craft",
+      "threshold": 7,
+      "evidenceTypes": [
+        "selector_assertion",
+        "manual_observation"
+      ],
+      "verificationSteps": [
+        "Load page",
+        "Check document title is present and non-empty",
+        "Record title value"
+      ],
+      "playwright": {
+        "steps": [
+          {
+            "type": "goto",
+            "url": "file://runtime/fixtures/playwright-smoke/index.html",
+            "waitUntil": "load"
+          },
+          {
+            "type": "assertSelector",
+            "selector": "title",
+            "minCount": 1
+          }
+        ],
+        "stopOnFailure": false
+      }
+    },
+    {
+      "id": "no-broken-images",
+      "label": "No broken images or missing resources on initial render",
+      "dimension": "Craft",
+      "threshold": 7,
+      "evidenceTypes": [
+        "console_check",
+        "screenshot"
+      ],
+      "verificationSteps": [
+        "Load page",
+        "Monitor network requests for 404 or failed image loads",
+        "Check console for resource load errors",
+        "Capture screenshot for visual verification"
+      ],
+      "playwright": {
+        "steps": [
+          {
+            "type": "goto",
+            "url": "file://runtime/fixtures/playwright-smoke/index.html",
+            "waitUntil": "networkidle"
+          },
+          {
+            "type": "checkConsole",
+            "level": "error"
+          },
+          {
+            "type": "screenshot",
+            "name": "no-broken-resources",
+            "fullPage": true
+          }
+        ],
+        "stopOnFailure": false
+      }
+    }
+  ],
+  "verificationChecklist": [
+    "Navigate to runtime/fixtures/playwright-smoke/index.html using Playwright",
+    "Verify page loads with HTTP 200",
+    "Confirm at least one visible content element exists",
+    "Check console log for zero errors",
+    "Check console log for zero warnings",
+    "Verify page has a document title",
+    "Check for broken images or 404 network errors",
+    "Capture screenshots documenting each verification step",
+    "Review all evidence before claiming completion"
+  ],
+  "knownConstraints": [
+    "Must evaluate existing fixture as-is without modifications",
+    "Limited to file:// protocol access for local HTML file",
+    "No product context beyond fixture file contents",
+    "Must use Playwright for all verification steps",
+    "Evidence types restricted to screenshot, console_check, and selector_assertion",
+    "Single-pass delivery mode requires complete verification in one sprint"
+  ]
+}

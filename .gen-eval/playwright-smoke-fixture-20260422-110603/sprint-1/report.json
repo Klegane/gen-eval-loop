@@ -1,0 +1,32 @@
+{
+  "runId": "playwright-smoke-fixture-20260422-110603",
+  "artifact": "report",
+  "sprint": 1,
+  "status": "done_with_concerns",
+  "createdAt": "2026-04-22T11:06:30.814Z",
+  "updatedAt": "2026-04-22T11:06:30.814Z",
+  "whatIBuilt": [
+    "Satisfy the primary request: verify the Playwright evidence runner against a local smoke page"
+  ],
+  "selfCheck": [
+    {
+      "label": "A sprint contract can be drafted from this spec without inventing hidden requirements.",
+      "passed": false,
+      "note": "Skeleton report: verification not yet executed."
+    },
+    {
+      "label": "The evaluator can derive concrete checks from the spec's quality intent and scope.",
+      "passed": false,
+      "note": "Skeleton report: verification not yet executed."
+    }
+  ],
+  "changeLog": [
+    "Skeleton report created for runtime flow testing."
+  ],
+  "knownConcerns": [
+    "Implementation details still need to be supplied by the Generator role."
+  ],
+  "filesChanged": [
+    "TBD"
+  ]
+}

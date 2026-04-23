@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Playwright Smoke Fixture</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: Georgia, "Times New Roman", serif;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background:
+          radial-gradient(circle at top, rgba(217, 174, 93, 0.35), transparent 50%),
+          linear-gradient(180deg, #f8f2e8 0%, #eadac2 100%);
+        color: #2b1d12;
+      }
+
+      main {
+        width: min(40rem, calc(100vw - 3rem));
+        padding: 3rem;
+        border-radius: 1.5rem;
+        background: rgba(255, 250, 242, 0.88);
+        box-shadow: 0 24px 80px rgba(67, 41, 18, 0.18);
+      }
+
+      .eyebrow {
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+      }
+
+      h1 {
+        margin: 0.75rem 0 1rem;
+        font-size: clamp(2.5rem, 7vw, 4.5rem);
+        line-height: 0.95;
+      }
+
+      p {
+        max-width: 34rem;
+        font-size: 1.05rem;
+        line-height: 1.6;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="eyebrow">Smoke Fixture</div>
+      <h1>Evidence runner ready</h1>
+      <p>
+        This page exists only to verify that the Playwright runner can open a URL, assert a selector,
+        capture a screenshot, and confirm the console is clean.
+      </p>
+    </main>
+  </body>
+</html>

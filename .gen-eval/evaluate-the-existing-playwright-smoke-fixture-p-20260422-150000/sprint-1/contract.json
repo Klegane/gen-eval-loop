@@ -1,0 +1,179 @@
+{
+  "runId": "evaluate-the-existing-playwright-smoke-fixture-p-20260422-150000",
+  "artifact": "contract",
+  "sprint": 1,
+  "qualityProfile": "ui",
+  "executionMode": "full-loop",
+  "deliveryMode": "single-pass",
+  "gitMode": "workspace-mode",
+  "status": "signed",
+  "decision": "initial",
+  "negotiationRound": 1,
+  "generatorSigned": true,
+  "evaluatorSigned": true,
+  "createdAt": "2026-04-22T15:00:00Z",
+  "updatedAt": "2026-04-22T15:00:00Z",
+  "scope": [
+    "Load the smoke fixture page at / via local HTTP and verify it returns a successful response",
+    "Confirm the headline text 'Evidence runner ready' is present in the DOM and visible",
+    "Capture console output during page load and verify zero errors",
+    "Capture console output during page load and verify zero warnings",
+    "Capture a screenshot of the loaded page as visual evidence",
+    "Produce evidence artifacts using Playwright screenshot and console_check types"
+  ],
+  "outOfScope": [
+    "Modifying the smoke fixture page HTML, CSS, or JavaScript",
+    "Evaluating the design quality, originality, or craft of the fixture page",
+    "Testing interaction flows, user input, or navigation beyond the initial page load",
+    "Assessing server configuration, network infrastructure, or deployment concerns",
+    "Inventing new product requirements or expanding the fixture functionality"
+  ],
+  "criteria": [
+    {
+      "id": "load-success",
+      "label": "Smoke fixture page loads successfully at /",
+      "dimension": "Functionality",
+      "threshold": 7,
+      "evidenceTypes": [
+        "screenshot",
+        "selector_assertion"
+      ],
+      "verificationSteps": [
+        "Navigate to / using Playwright",
+        "Wait for the page to reach the 'load' or 'domcontentloaded' state",
+        "Capture a screenshot to confirm the page rendered",
+        "Assert that the page loaded without navigation errors"
+      ],
+      "playwright": {
+        "steps": [
+          {
+            "type": "goto",
+            "url": "/",
+            "waitUntil": "load"
+          },
+          {
+            "type": "screenshot",
+            "name": "smoke-fixture-loaded",
+            "fullPage": true
+          }
+        ],
+        "stopOnFailure": true
+      }
+    },
+    {
+      "id": "headline-visible",
+      "label": "Headline 'Evidence runner ready' is present and visible",
+      "dimension": "Functionality",
+      "threshold": 7,
+      "evidenceTypes": [
+        "selector_assertion",
+        "screenshot"
+      ],
+      "verificationSteps": [
+        "Locate the headline element containing the text 'Evidence runner ready'",
+        "Assert the element is attached to the DOM",
+        "Assert the element is visible to the user",
+        "Capture a screenshot showing the headline in context"
+      ],
+      "playwright": {
+        "steps": [
+          {
+            "type": "waitForSelector",
+            "selector": "text=Evidence runner ready",
+            "state": "visible",
+            "timeoutMs": 5000
+          },
+          {
+            "type": "assertSelector",
+            "selector": "text=Evidence runner ready",
+            "minCount": 1,
+            "maxCount": 1
+          },
+          {
+            "type": "screenshot",
+            "name": "headline-visible",
+            "fullPage": false
+          }
+        ],
+        "stopOnFailure": true
+      }
+    },
+    {
+      "id": "console-no-errors",
+      "label": "Console contains zero errors during page load",
+      "dimension": "Craft",
+      "threshold": 7,
+      "evidenceTypes": [
+        "console_check"
+      ],
+      "verificationSteps": [
+        "Monitor console output during page load",
+        "Filter for messages with level 'error'",
+        "Assert that zero error-level messages were logged"
+      ],
+      "playwright": {
+        "steps": [
+          {
+            "type": "goto",
+            "url": "/",
+            "waitUntil": "load"
+          },
+          {
+            "type": "checkConsole",
+            "level": "error",
+            "allowMessages": []
+          }
+        ],
+        "stopOnFailure": true
+      }
+    },
+    {
+      "id": "console-no-warnings",
+      "label": "Console contains zero warnings during page load",
+      "dimension": "Craft",
+      "threshold": 7,
+      "evidenceTypes": [
+        "console_check"
+      ],
+      "verificationSteps": [
+        "Monitor console output during page load",
+        "Filter for messages with level 'warning'",
+        "Assert that zero warning-level messages were logged"
+      ],
+      "playwright": {
+        "steps": [
+          {
+            "type": "goto",
+            "url": "/",
+            "waitUntil": "load"
+          },
+          {
+            "type": "checkConsole",
+            "level": "warning",
+            "allowMessages": []
+          }
+        ],
+        "stopOnFailure": true
+      }
+    }
+  ],
+  "verificationChecklist": [
+    "Confirm Playwright can navigate to / via the local HTTP server provided by the controller",
+    "Verify the page load completes without navigation errors",
+    "Confirm the headline text 'Evidence runner ready' is present in the DOM",
+    "Confirm the headline is visible (not hidden or off-screen)",
+    "Capture and review console output for error-level messages during page load",
+    "Capture and review console output for warning-level messages during page load",
+    "Collect screenshot evidence of the loaded page",
+    "Collect screenshot evidence of the visible headline",
+    "Ensure all evidence artifacts reference the correct criterion IDs",
+    "Confirm all evidence types used (screenshot, console_check, selector_assertion) are valid for the ui profile"
+  ],
+  "knownConstraints": [
+    "Must use relative URLs only; the controller provides the local HTTP server and baseUrl",
+    "Must not modify the smoke fixture page or invent new product requirements",
+    "Evidence collection is limited to Playwright-based methods available in the ui profile",
+    "Console checks are strict: any error or warning message will cause the criterion to fail",
+    "The evaluation is a meta-quality check of the Playwright infrastructure, not a product quality assessment"
+  ]
+}

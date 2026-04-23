@@ -61,7 +61,7 @@ Required frontmatter:
 artifact: contract
 sprint: <integer>
 git_mode: <commit-mode|workspace-mode>
-strategic_decision: <initial|refine|pivot>
+decision: <initial|refine|pivot>
 negotiation_round: <integer>
 generator_signed: <true|false>
 evaluator_signed: <true|false>
@@ -90,9 +90,7 @@ Required frontmatter:
 ```yaml
 artifact: report
 sprint: <integer>
-git_mode: <commit-mode|workspace-mode>
 status: <done|done_with_concerns|blocked|needs_context>
-files_changed_count: <integer>
 ```
 
 Required sections:
@@ -162,12 +160,12 @@ Required sections:
 5. Residual risks
 6. Recommended next step
 
-## 6. state.json
+## 6. run.json
 
 Path:
 
 ```text
-.gen-eval/<run-id>/state.json
+.gen-eval/<run-id>/run.json
 ```
 
 Required shape:
@@ -208,7 +206,6 @@ Required shape:
   "criteria": [
     {
       "criterionId": "hero-identity",
-      "dimension": "Originality",
       "status": "PASS",
       "evidence": [
         {
@@ -219,7 +216,7 @@ Required shape:
       ]
     }
   ],
-  "notes": []
+  "infraFailures": []
 }
 ```
 
