@@ -50,7 +50,8 @@ The controller should use these files in this order:
 6. the relevant prompt template:
    - [planner-prompt.md](planner-prompt.md)
    - [generator-prompt.md](generator-prompt.md)
-   - [evaluator-prompt.md](evaluator-prompt.md)
+   - [contract-reviewer-prompt.md](contract-reviewer-prompt.md) — Gate B
+   - [sprint-evaluator-prompt.md](sprint-evaluator-prompt.md) — Gate C
 7. [run-summary-template.md](run-summary-template.md)
 
 ## When To Use
@@ -100,12 +101,20 @@ Each role must run in a fresh subagent session. The controller never reuses the 
 - writes `report.md`
 - proposes `refine` or `pivot` after failed sprints
 
-### Evaluator
+### ContractReviewer
 
-- reviews contract quality before implementation
-- scores the finished sprint against the active profile rubric
+- validates the draft contract before implementation begins (Gate B only)
+- never sees the implementation
+- never scores a sprint
+- uses `contract-reviewer-prompt.md`
+
+### SprintEvaluator
+
+- scores the finished implementation against the signed contract (Gate C only)
+- runs in a fresh session with no memory of the ContractReviewer session
 - writes `score.md` and `evidence.json`
-- is skeptical by default
+- is skeptical by default: assumes FAIL until evidence proves otherwise
+- uses `sprint-evaluator-prompt.md`
 
 ## Controller Workflow
 

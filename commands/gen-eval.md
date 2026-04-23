@@ -86,9 +86,10 @@ Read the spec yourself before continuing. If it is bland, vague, or not auditabl
 For each sprint:
 
 1. Dispatch Generator in `DRAFT_CONTRACT`.
-2. Dispatch Evaluator in `REVIEW_CONTRACT`.
-3. If the Evaluator requests changes, the Generator revises and resubmits.
-4. Do not proceed until:
+2. Dispatch **ContractReviewer** (using `contract-reviewer-prompt.md`) for this sprint's contract.
+3. If ContractReviewer reports `CHANGES_REQUESTED`, the Generator revises and resubmits.
+4. ContractReviewer must be a **fresh subagent each negotiation round** — never reuse its session.
+5. Do not proceed until:
    - the contract validates against the artefact schema
    - both signatures are present
    - every criterion maps to a valid dimension in the active profile rubric
@@ -106,9 +107,11 @@ Only in `full-loop` mode:
 
 ## Step 6 - Evaluation gate
 
-Dispatch Evaluator in `SCORE`.
+Dispatch **SprintEvaluator** (using `sprint-evaluator-prompt.md`) in a **fresh subagent session**.
 
-The Evaluator must produce:
+This must NOT be the same session used for contract review in Step 4. A SprintEvaluator has no memory of the ContractReviewer session.
+
+The SprintEvaluator must produce:
 
 - `.gen-eval/<run-id>/sprint-N/score.md`
 - `.gen-eval/<run-id>/sprint-N/evidence.json`
