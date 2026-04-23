@@ -70,6 +70,25 @@ There is no degraded mode for the UI profile. Static-only evaluation defeats the
 
 If git is unavailable or the workspace policy makes commits inappropriate, set `git_mode` to `workspace-mode` and record that limitation in `state.json`.
 
+## Gate validation — how to call the validator
+
+Before advancing state at any gate, run the validator via Bash:
+
+```bash
+python3 scripts/validate-gate.py --run-id <RUN_ID> --gate <A|B|C|D>
+```
+
+If the command exits with a non-zero code:
+1. Do NOT advance `state.json`.
+2. Report the exact error message to the user verbatim.
+3. Resolve the blocking issue before retrying.
+
+If `pyyaml` is not installed:
+```bash
+pip install pyyaml --quiet
+```
+Then retry.
+
 ## Step 3 - Planner
 
 Dispatch the Planner with:
@@ -84,6 +103,14 @@ Dispatch the Planner with:
 The Planner writes `docs/gen-eval/<run-id>/spec.md`.
 
 Read the spec yourself before continuing. If it is bland, vague, or not auditable, send it back for revision before starting sprint work.
+
+After reading the spec, run Gate A validation:
+
+```bash
+python3 scripts/validate-gate.py --run-id <RUN_ID> --gate A
+```
+
+Do not dispatch the Generator until Gate A exits 0.
 
 ## Step 4 - Contract gate
 
@@ -100,6 +127,14 @@ For each sprint:
    - every criterion has a concrete verification method
 
 If three negotiation rounds fail, escalate to the user with a concise gating question.
+
+After the ContractReviewer reports `SIGNED`, run Gate B validation:
+
+```bash
+python3 scripts/validate-gate.py --run-id <RUN_ID> --gate B
+```
+
+The script is the authoritative gate check. Do not advance `state.json` to `contract_signed` until Gate B exits 0.
 
 ## Step 5 - Implementation gate
 
@@ -126,6 +161,14 @@ The SprintEvaluator must produce:
 - `.gen-eval/<run-id>/sprint-N/score.md`
 - `.gen-eval/<run-id>/sprint-N/evidence.json`
 
+After the SprintEvaluator reports `SCORED`, run Gate C validation:
+
+```bash
+python3 scripts/validate-gate.py --run-id <RUN_ID> --gate C
+```
+
+Do not accept PASS or FAIL from the SprintEvaluator until Gate C exits 0. The script's verdict supersedes the SprintEvaluator's self-reported verdict.
+
 Do not accept PASS unless:
 
 - every criterion has evidence
@@ -141,6 +184,14 @@ Do not accept PASS unless:
 ## Step 8 - Finalization
 
 Every run ends with `docs/gen-eval/<run-id>/summary.md`.
+
+After writing `summary.md`, run Gate D validation:
+
+```bash
+python3 scripts/validate-gate.py --run-id <RUN_ID> --gate D
+```
+
+Do not mark the run complete until Gate D exits 0.
 
 The summary must include:
 

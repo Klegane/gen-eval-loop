@@ -50,3 +50,31 @@ To resume a run:
 3. continue from the latest valid state only
 
 If `state.json` and the file tree disagree, trust the file tree and repair `state.json` before proceeding.
+
+## Gate Validation Script
+
+The controller must call `scripts/validate-gate.py` before advancing state at each gate.
+
+```bash
+# Gate A — after spec.md is written
+python3 scripts/validate-gate.py --run-id <RUN_ID> --gate A
+
+# Gate B — after ContractReviewer reports SIGNED
+python3 scripts/validate-gate.py --run-id <RUN_ID> --gate B
+
+# Gate C — after SprintEvaluator reports SCORED
+python3 scripts/validate-gate.py --run-id <RUN_ID> --gate C
+
+# Gate D — after summary.md is written
+python3 scripts/validate-gate.py --run-id <RUN_ID> --gate D
+```
+
+Requires: Python 3.9+, `pyyaml` (`pip install pyyaml`).
+
+The script enforces:
+- artifact existence at each gate
+- required YAML frontmatter fields
+- both signatures on contracts (Gate B)
+- no `UNVERIFIED` criteria (Gate C)
+- no `manual_observation`-only evidence (Gate C)
+- valid `final_verdict` values (Gate D)
