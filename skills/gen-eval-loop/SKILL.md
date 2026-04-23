@@ -148,9 +148,12 @@ Do not accept PASS unless:
 
 - `score.md` exists
 - `evidence.json` exists
-- every criterion has evidence
+- every criterion has at least one objective evidence item (not `manual_observation` alone)
 - no criterion is `UNVERIFIED`
 - every criterion is at or above threshold
+
+`manual_observation` is only valid as supplementary context alongside objective evidence.
+The gate validator (scripts/validate-gate.py) enforces this programmatically.
 
 ### Gate D - Finalization gate
 

@@ -220,7 +220,9 @@ Required shape:
 }
 ```
 
-Allowed evidence types:
+## Objective evidence types
+
+These may be used alone or in combination:
 
 - `screenshot`
 - `console_check`
@@ -230,6 +232,9 @@ Allowed evidence types:
 - `log_extract`
 - `command_output`
 - `git_diff_review`
-- `manual_observation`
+
+## Restricted evidence type
+
+- `manual_observation` — **only valid when paired with at least one objective evidence type above**. A criterion whose entire evidence list is `manual_observation` items will be rejected by the gate validator as `UNVERIFIED`. Use this type to add context to objective evidence, not to replace it.
 
 Every scored criterion needs at least one evidence item. No evidence means no PASS.
