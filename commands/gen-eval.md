@@ -35,10 +35,14 @@ Before dispatching any subagent:
    - `agentic`
    - `content`
 4. Detect the current model and choose the `delivery_mode` (`single-pass` or `short-sprint`) using `skills/gen-eval-loop/model-adaptation.md`.
-5. Pick the `git_mode`:
+5. Choose the `evaluator_model` using `skills/gen-eval-loop/model-adaptation.md`:
+   - If the active model is `claude-sonnet-*`, prefer `claude-opus-*` for the SprintEvaluator.
+   - If no upgrade is available, use the same model and set `evaluatorModelNote: "same model — upgrade unavailable"` in `state.json`.
+   - Record `evaluatorModel` in `state.json`.
+6. Pick the `git_mode`:
    - `commit-mode`
    - `workspace-mode`
-6. Initialize:
+7. Initialize:
    - `docs/gen-eval/<run-id>/spec.md`
    - `docs/gen-eval/<run-id>/summary.md`
    - `.gen-eval/<run-id>/state.json`
@@ -110,6 +114,12 @@ Only in `full-loop` mode:
 Dispatch **SprintEvaluator** (using `sprint-evaluator-prompt.md`) in a **fresh subagent session**.
 
 This must NOT be the same session used for contract review in Step 4. A SprintEvaluator has no memory of the ContractReviewer session.
+
+When dispatching the SprintEvaluator subagent, include in the prompt:
+
+> Preferred model for this subagent: [evaluatorModel from state.json]
+
+Note: if the environment does not support per-subagent model override, log `evaluatorModelNote` in `evidence.json` under `notes`.
 
 The SprintEvaluator must produce:
 

@@ -182,6 +182,8 @@ Required shape:
   "playwrightAvailable": true,
   "currentSprint": 0,
   "lastCompletedState": "initialized",
+  "evaluatorModel": "claude-opus-4-7",
+  "evaluatorModelNote": "",
   "sprints": []
 }
 ```

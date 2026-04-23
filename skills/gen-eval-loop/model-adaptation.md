@@ -66,3 +66,25 @@ These are constant across modes:
 - the evidence gate
 - the requirement for a signed contract
 - the final summary
+
+## Evaluator Model Recommendation
+
+The SprintEvaluator should run on a **more capable model than the Generator** when the environment allows it.
+
+Recommended pairings (Generator → SprintEvaluator):
+
+| Generator model | Recommended SprintEvaluator model |
+|-----------------|-----------------------------------|
+| `claude-sonnet-*` | `claude-opus-*` |
+| `claude-haiku-*` | `claude-sonnet-*` or `claude-opus-*` |
+| `claude-opus-*` | `claude-opus-*` (same tier — no upgrade available) |
+
+The ContractReviewer may use the same model as the Generator — its job is structural validation, not quality judgment.
+
+If the environment does not support per-subagent model selection, document this in `state.json` under `evaluatorModelNote` and proceed with the available model. Do not skip evaluation.
+
+Record the chosen evaluator model in `state.json`:
+
+```json
+"evaluatorModel": "claude-opus-4-7"
+```
