@@ -4,6 +4,10 @@ Default threshold per dimension: 7
 
 Use this profile for frontends, landing pages, dashboards, visual flows, and any run where visual quality is part of the product value.
 
+## Hard dependency
+
+This profile requires Playwright MCP (`mcp__playwright__*`) for evaluation. The controller must verify availability before run initialization. Runs on this profile cannot proceed without a live browser evaluation tool. There is no static fallback mode.
+
 ## Dimensions
 
 ### 1. Design Quality

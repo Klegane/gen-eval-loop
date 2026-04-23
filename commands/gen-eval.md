@@ -45,9 +45,26 @@ Before dispatching any subagent:
 
 ## Step 2 - Precondition checks
 
-- If the active profile is `ui`, verify Playwright MCP tools (`mcp__playwright__*`) are available before dispatching the Planner.
-- If Playwright is missing, warn the user once that any live-only UI criterion will remain `UNVERIFIED`, which causes the sprint to fail unless the contract uses static-only checks.
-- If git is unavailable or the workspace policy makes commits inappropriate, set `git_mode` to `workspace-mode` and record that limitation in `state.json`.
+### UI profile — Playwright hard dependency
+
+If the active profile is `ui`, verify that Playwright MCP tools (`mcp__playwright__*`) are available **before dispatching the Planner**.
+
+If Playwright is unavailable:
+1. Do NOT initialize the run.
+2. Stop and tell the user:
+
+   > "The `ui` quality profile requires Playwright MCP for browser evaluation. Playwright MCP tools (`mcp__playwright__*`) are not available in this session. Options:
+   > - Start Claude Code with Playwright MCP configured and retry.
+   > - Switch to the `backend` or `content` profile if visual quality is not the primary concern.
+   > The run cannot proceed without Playwright for UI evaluation."
+
+3. Set `state.json` to `aborted` if it was already initialized, then stop.
+
+There is no degraded mode for the UI profile. Static-only evaluation defeats the purpose of UI quality gating.
+
+### Git mode detection
+
+If git is unavailable or the workspace policy makes commits inappropriate, set `git_mode` to `workspace-mode` and record that limitation in `state.json`.
 
 ## Step 3 - Planner
 
