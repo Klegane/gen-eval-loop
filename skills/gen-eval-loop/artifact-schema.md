@@ -61,7 +61,7 @@ Required frontmatter:
 artifact: contract
 sprint: <integer>
 git_mode: <commit-mode|workspace-mode>
-decision: <initial|refine|pivot>
+strategic_decision: <initial|refine|pivot>
 negotiation_round: <integer>
 generator_signed: <true|false>
 evaluator_signed: <true|false>

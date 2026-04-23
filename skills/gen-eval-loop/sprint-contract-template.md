@@ -16,7 +16,7 @@ quality_profile: ui
 execution_mode: full-loop
 delivery_mode: single-pass
 git_mode: commit-mode
-decision: initial
+strategic_decision: initial
 negotiation_round: 1
 generator_signed: false
 evaluator_signed: false
