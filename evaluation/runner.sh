@@ -60,6 +60,10 @@ fi
 echo "$PROMPT" | bash -c "$CLAUDE_BASELINE_CMD" > "$OUT_DIR/$BASELINE_LABEL/output.md" 2> "$OUT_DIR/$BASELINE_LABEL/stderr.log"
 
 echo "== Running gen-eval-loop ($GENEVAL_LABEL) for $TASK_ID =="
+# The runtime's PromptLoader reads skills/gen-eval-loop/*.md relative to --repo-root.
+# Symlink the real skills/ into the output dir so artifacts are isolated per run
+# while prompt templates still resolve.
+ln -sfn "$REPO_ROOT/skills" "$OUT_DIR/$GENEVAL_LABEL/skills"
 cd "$REPO_ROOT/runtime"
 npm run --silent start -- run-full-loop \
   --prompt "$PROMPT" \
