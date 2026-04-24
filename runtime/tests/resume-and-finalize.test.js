@@ -106,7 +106,44 @@ test("resumeRun drives a ui run to completion using the development adapter", as
 });
 
 // ---------------------------------------------------------------------------
-// Test 2: finalizeRun writes summary.json with the given verdict
+// Test 2: resumeRun drives a content run to completion without Playwright
+// ---------------------------------------------------------------------------
+test("resumeRun drives a content run to completion using synthetic evidence", async (t) => {
+  const controller = new RunController(REPO_ROOT);
+
+  const initialized = await controller.initializeRun({
+    prompt: "resume-test-content-smoke",
+    model: "runtime-dev",
+    qualityProfile: "content",
+    executionMode: "full-loop",
+    playwrightAvailable: false,
+  });
+
+  t.after(() => cleanupRunDir(initialized.run.runId));
+
+  const adapter = createLlmAdapter({ provider: "development" });
+  const plannerRole = new PlannerRole(REPO_ROOT, adapter);
+  const generatorRole = new GeneratorRole(REPO_ROOT, adapter);
+  const evaluatorRole = new EvaluatorRole(REPO_ROOT, adapter);
+
+  const result = await resumeRun({
+    controller,
+    plannerRole,
+    generatorRole,
+    evaluatorRole,
+    runId: initialized.run.runId,
+  });
+
+  assert.equal(result.completed, true, "run must reach a completed state");
+  assert.match(
+    result.run.status,
+    /^(passed|failed|completed|capped|aborted)$/,
+    `unexpected terminal status: ${result.run.status}`,
+  );
+});
+
+// ---------------------------------------------------------------------------
+// Test 3: finalizeRun writes summary.json with the given verdict
 // ---------------------------------------------------------------------------
 test("finalizeRun writes summary.json and summary.md with the given verdict", async (t) => {
   const controller = new RunController(REPO_ROOT);

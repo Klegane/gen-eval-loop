@@ -3,6 +3,13 @@ import type { ContractData } from "../schemas/contract";
 import type { SpecData } from "../schemas/spec";
 import { nowIso } from "../utils/timestamps";
 
+const DIMENSIONS_PER_PROFILE: Record<RunRecordData["qualityProfile"], readonly [string, string]> = {
+  ui: ["Design Quality", "Functionality"],
+  backend: ["Correctness", "Reliability"],
+  agentic: ["Task Success", "Robustness"],
+  content: ["Accuracy", "Structure"],
+};
+
 export function buildContractSkeleton(
   run: RunRecordData,
   spec: SpecData,
@@ -11,6 +18,7 @@ export function buildContractSkeleton(
   timestamp: Date = new Date(),
 ): ContractData {
   const isoTimestamp = nowIso(timestamp);
+  const dimensions = DIMENSIONS_PER_PROFILE[run.qualityProfile];
 
   return {
     runId: run.runId,
@@ -32,12 +40,7 @@ export function buildContractSkeleton(
     criteria: spec.successCriteria.slice(0, 2).map((criterion, index) => ({
       id: `criterion-${index + 1}`,
       label: criterion,
-      dimension:
-        run.qualityProfile === "ui"
-          ? index === 0
-            ? "Design Quality"
-            : "Functionality"
-          : "Correctness",
+      dimension: dimensions[index] ?? dimensions[0],
       threshold: 7,
       evidenceTypes:
         run.qualityProfile === "ui"
