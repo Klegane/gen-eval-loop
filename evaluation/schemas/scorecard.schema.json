@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Scorecard",
+  "type": "object",
+  "required": ["judgeId", "date", "results"],
+  "properties": {
+    "judgeId": { "type": "string", "enum": ["A", "B", "C"] },
+    "date": { "type": "string", "format": "date" },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["taskId", "outputX", "outputY", "preference"],
+        "properties": {
+          "taskId": { "type": "string" },
+          "outputX": { "$ref": "#/$defs/rating" },
+          "outputY": { "$ref": "#/$defs/rating" },
+          "preference": { "type": "string", "enum": ["X", "Y", "TIE"] }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "rating": {
+      "type": "object",
+      "required": ["scores"],
+      "properties": {
+        "scores": {
+          "type": "object",
+          "additionalProperties": { "type": "integer", "minimum": 1, "maximum": 5 }
+        },
+        "notes": { "type": "string" }
+      }
+    }
+  }
+}
