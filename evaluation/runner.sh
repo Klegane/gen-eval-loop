@@ -21,13 +21,24 @@ OUT_DIR="$REPO_ROOT/evaluation/results/$TS/$TASK_ID"
 mkdir -p "$OUT_DIR/A" "$OUT_DIR/B"
 
 # Extract task prompt + profile from corpus via Python (portable vs jq).
-read -r PROMPT PROFILE < <(python3 - <<PY
+# Two separate invocations — prompts contain spaces, so a single `read PROMPT PROFILE`
+# would split the prompt across both variables.
+PROMPT=$(python3 - <<PY
 import yaml, sys
 corpus = yaml.safe_load(open("$REPO_ROOT/evaluation/corpus/tasks.yaml"))
 task = next((t for t in corpus["tasks"] if t["id"] == "$TASK_ID"), None)
 if not task:
     sys.exit(f"task $TASK_ID not found")
-print(task["prompt"].replace("\n", " "), task["profile"])
+print(task["prompt"].replace("\n", " "))
+PY
+)
+PROFILE=$(python3 - <<PY
+import yaml, sys
+corpus = yaml.safe_load(open("$REPO_ROOT/evaluation/corpus/tasks.yaml"))
+task = next((t for t in corpus["tasks"] if t["id"] == "$TASK_ID"), None)
+if not task:
+    sys.exit(f"task $TASK_ID not found")
+print(task["profile"])
 PY
 )
 
