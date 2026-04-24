@@ -1,0 +1,46 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git -C /Users/erikmuniain/Projects/gen-eval-loop show --stat 9feb7e1)",
+      "Bash(git -C /Users/erikmuniain/Projects/gen-eval-loop add skills/gen-eval-loop/artifact-schema.md skills/gen-eval-loop/SKILL.md)",
+      "Bash(git -C /Users/erikmuniain/Projects/gen-eval-loop commit -m \"fix: demote manual_observation to restricted supplementary evidence type\")",
+      "Bash(git -C /Users/erikmuniain/Projects/gen-eval-loop add skills/gen-eval-loop/contract-reviewer-prompt.md skills/gen-eval-loop/sprint-evaluator-prompt.md skills/gen-eval-loop/evaluator-prompt.md skills/gen-eval-loop/SKILL.md commands/gen-eval.md)",
+      "Bash(git -C /Users/erikmuniain/Projects/gen-eval-loop commit -m ' *)",
+      "Bash(python3 -m py_compile scripts/validate-gate.py)",
+      "Bash(python3 scripts/validate-gate.py --run-id smoke-test --gate C)",
+      "Bash(git -C /Users/erikmuniain/Projects/gen-eval-loop add scripts/validate-gate.py)",
+      "Bash(git -C /Users/erikmuniain/Projects/gen-eval-loop commit -m \"feat: add deterministic gate validator \\(scripts/validate-gate.py\\)\")",
+      "Bash(git -C /Users/erikmuniain/Projects/gen-eval-loop add commands/gen-eval.md skills/gen-eval-loop/file-communication-layout.md)",
+      "Bash(git -C /Users/erikmuniain/Projects/gen-eval-loop log --oneline -7)",
+      "Bash(pip install *)",
+      "Bash(python3 -c \"import yaml; print\\('pyyaml OK'\\)\")",
+      "Bash(git -C /Users/erikmuniain/Projects/gen-eval-loop add README.md)",
+      "Bash(git -C /Users/erikmuniain/Projects/gen-eval-loop commit -m \"docs: update README to reflect hardened architecture \\(split roles, gate validator, Playwright hard dep\\)\")",
+      "Bash(git -C /Users/erikmuniain/Projects/gen-eval-loop add runtime/tests/helpers/temp-repo.js)",
+      "Bash(git -C /Users/erikmuniain/Projects/gen-eval-loop commit -m \"test: add shared temp-repo helper for runtime tests\")",
+      "Bash(npm test *)",
+      "Bash(npx tsc *)",
+      "Bash(git -C /Users/erikmuniain/Projects/gen-eval-loop add runtime/tests/schemas.test.js)",
+      "Bash(git -C /Users/erikmuniain/Projects/gen-eval-loop add runtime/tests/run-controller-transitions.test.js)",
+      "Bash(git -C /Users/erikmuniain/Projects/gen-eval-loop commit -m \"test: cover RunController gate transitions end-to-end\")",
+      "Bash(git -C /Users/erikmuniain/Projects/gen-eval-loop add runtime/tests/run-controller-assertions.test.js)",
+      "Bash(git -C /Users/erikmuniain/Projects/gen-eval-loop add runtime/tests/markdown-renderer.test.js)",
+      "Bash(npm run *)",
+      "Bash(git -C /Users/erikmuniain/Projects/gen-eval-loop add runtime/tests/development-adapter.test.js)",
+      "Bash(node -e \"const { buildEvaluationSkeleton } = require\\('/Users/erikmuniain/Projects/gen-eval-loop/runtime/dist/app/evaluation-skeleton.js'\\); console.log\\(Object.keys\\(buildEvaluationSkeleton\\)\\)\")",
+      "Bash(git -C /Users/erikmuniain/Projects/gen-eval-loop add runtime/tests/roles.test.js)",
+      "Bash(xargs ls *)",
+      "Bash(git -C /Users/erikmuniain/Projects/gen-eval-loop status)",
+      "Bash(git -C /Users/erikmuniain/Projects/gen-eval-loop diff --stat)",
+      "Bash(git -C /Users/erikmuniain/Projects/gen-eval-loop add runtime/tests/resume-and-finalize.test.js)",
+      "Bash(git -C /Users/erikmuniain/Projects/gen-eval-loop add runtime/tests/cli.test.js)",
+      "Bash(python3 -c \"import yaml; yaml.safe_load\\(open\\('/Users/erikmuniain/Projects/gen-eval-loop/.github/workflows/ci.yml'\\)\\)\")"
+    ],
+    "additionalDirectories": [
+      "/Users/erikmuniain/Ojects/gen-eval-loop/docs/superpowers/plans",
+      "/Users/erikmuniain/Ojects"
+    ]
+  }
+}

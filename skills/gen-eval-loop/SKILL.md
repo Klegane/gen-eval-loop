@@ -162,7 +162,6 @@ Do not accept PASS unless:
 - every criterion is at or above threshold
 
 `manual_observation` is only valid as supplementary context alongside objective evidence.
-The gate validator (scripts/validate-gate.py) enforces this programmatically.
 
 ### Gate D - Finalization gate
 
