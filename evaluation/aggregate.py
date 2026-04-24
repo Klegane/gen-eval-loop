@@ -56,10 +56,13 @@ def main() -> None:
                 continue
             task = by_task.setdefault(task_id, {"baseline": [], "geneval": [], "preferences": []})
 
-            x_cond = "baseline" if assignments[task_id]["baseline"] == "X" else "geneval"
-            y_cond = "baseline" if assignments[task_id]["baseline"] == "Y" else "geneval"
+            # Scorecards use outputA/outputB/preference=A|B|TIE.
+            # assignment.txt records which label (A or B) was the baseline
+            # vs the gen-eval condition for this task.
+            a_cond = "baseline" if assignments[task_id]["baseline"] == "A" else "geneval"
+            b_cond = "baseline" if assignments[task_id]["baseline"] == "B" else "geneval"
 
-            for label, cond in (("outputX", x_cond), ("outputY", y_cond)):
+            for label, cond in (("outputA", a_cond), ("outputB", b_cond)):
                 scores = entry[label]["scores"]
                 for dim, score in scores.items():
                     task[cond].append((dim, score, judge))

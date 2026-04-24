@@ -10,12 +10,12 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["taskId", "outputX", "outputY", "preference"],
+        "required": ["taskId", "outputA", "outputB", "preference"],
         "properties": {
           "taskId": { "type": "string" },
-          "outputX": { "$ref": "#/$defs/rating" },
-          "outputY": { "$ref": "#/$defs/rating" },
-          "preference": { "type": "string", "enum": ["X", "Y", "TIE"] }
+          "outputA": { "$ref": "#/$defs/rating" },
+          "outputB": { "$ref": "#/$defs/rating" },
+          "preference": { "type": "string", "enum": ["A", "B", "TIE"] }
         }
       }
     }
