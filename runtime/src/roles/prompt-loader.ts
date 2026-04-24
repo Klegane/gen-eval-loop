@@ -23,16 +23,20 @@ export class PromptLoader {
     const [
       plannerTemplate,
       generatorTemplate,
-      evaluatorTemplate,
+      contractReviewerTemplate,
+      sprintEvaluatorTemplate,
       artifactSchema,
       rubric,
     ] = await Promise.all([
       this.fileStore.readText(path.join(skillRoot, "planner-prompt.md")),
       this.fileStore.readText(path.join(skillRoot, "generator-prompt.md")),
-      this.fileStore.readText(path.join(skillRoot, "evaluator-prompt.md")),
+      this.fileStore.readText(path.join(skillRoot, "contract-reviewer-prompt.md")),
+      this.fileStore.readText(path.join(skillRoot, "sprint-evaluator-prompt.md")),
       this.fileStore.readText(path.join(skillRoot, "artifact-schema.md")),
       this.fileStore.readText(path.join(skillRoot, "profiles", profile, "rubric.md")),
     ]);
+
+    const evaluatorTemplate = `${contractReviewerTemplate}\n\n---\n\n${sprintEvaluatorTemplate}`;
 
     return {
       plannerTemplate,
