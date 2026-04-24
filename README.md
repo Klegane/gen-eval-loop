@@ -14,9 +14,19 @@ The core idea:
 2. A **Generator** proposes scope and implements against a signed contract.
 3. A **ContractReviewer** validates the contract before implementation begins (Gate B).
 4. A **SprintEvaluator** scores the finished implementation with evidence (Gate C).
-5. A **deterministic gate validator** (`scripts/validate-gate.py`) enforces every state transition — no gate can be skipped or self-reported.
+5. A **deterministic runtime** enforces every state transition — no gate can be skipped or self-reported.
 
 ContractReviewer and SprintEvaluator always run in separate subagent sessions. The agent that approved the contract never scores the implementation.
+
+## Architecture
+
+This project has two components that work together:
+
+1. **Claude Code plugin** (`commands/`, `skills/`) — entry point. When you run `/gen-eval` inside Claude Code, the plugin delegates to the runtime CLI for the actual orchestration. The plugin's Markdown files are reference documentation for the roles the runtime dispatches.
+
+2. **TypeScript runtime** (`runtime/`) — the authoritative implementation. It owns `run.json`, validates all artifacts with Zod, runs the Planner/Generator/Evaluator roles via an LLM adapter (OpenAI, Anthropic, or deterministic development), and collects Playwright evidence. See [runtime/README.md](runtime/README.md).
+
+The runtime can be used directly via its CLI (`npm run start -- run-full-loop ...`) without Claude Code.
 
 ## Why It Exists
 
@@ -27,7 +37,7 @@ This plugin counters that by requiring:
 - explicit quality criteria **before** implementation starts
 - **separate roles** for contract review and sprint scoring
 - evidence per criterion before PASS — `manual_observation` alone is never accepted
-- a **deterministic Python script** that blocks gate transitions when artifacts are missing or malformed
+- a **deterministic runtime** that blocks gate transitions when artifacts are missing or malformed
 - a run history that can be resumed or audited
 
 ## Core Concepts
@@ -75,21 +85,6 @@ Objective evidence types: `screenshot`, `console_check`, `selector_assertion`, `
 
 `manual_observation` is only valid as supplementary context alongside objective evidence. Using it alone causes the gate validator to reject the criterion as `UNVERIFIED`.
 
-### Gate Validator
-
-`scripts/validate-gate.py` is a deterministic Python script that the controller runs before advancing state at every gate:
-
-```bash
-python3 scripts/validate-gate.py --run-id <RUN_ID> --gate A   # spec ready
-python3 scripts/validate-gate.py --run-id <RUN_ID> --gate B   # contract signed
-python3 scripts/validate-gate.py --run-id <RUN_ID> --gate C   # sprint evaluated
-python3 scripts/validate-gate.py --run-id <RUN_ID> --gate D   # run complete
-```
-
-If the script exits non-zero, the controller must not advance `state.json`. The error message is surfaced verbatim to the user.
-
-**Requires:** Python 3.9+, `pyyaml` (`pip install pyyaml`)
-
 ## Installation
 
 1. Clone or copy this directory anywhere on disk.
@@ -101,10 +96,10 @@ If the script exits non-zero, the controller must not advance `state.json`. The 
    }
    ```
 
-3. Install the gate validator dependency:
+3. Install the TypeScript runtime dependencies:
 
    ```bash
-   pip install pyyaml
+   cd runtime && npm install
    ```
 
 4. For `ui` profile runs, enable the Playwright MCP server. The UI profile has no degraded mode — runs will not start without Playwright available.
@@ -127,16 +122,6 @@ The controller will:
 6. score via SprintEvaluator (fresh session, preferably a more capable model) and validate (Gate C)
 7. emit evidence, scorecards, and a final summary validated (Gate D)
 
-## Evaluator Model
-
-To reduce same-model confirmation bias, the SprintEvaluator is dispatched on a more capable model than the Generator when the environment allows it:
-
-| Generator | Recommended SprintEvaluator |
-|-----------|----------------------------|
-| `claude-sonnet-*` | `claude-opus-*` |
-| `claude-haiku-*` | `claude-sonnet-*` or `claude-opus-*` |
-| `claude-opus-*` | `claude-opus-*` (same tier) |
-
 ## Run Layout
 
 ```text
@@ -146,8 +131,6 @@ To reduce same-model confirmation bias, the SprintEvaluator is dispatched on a m
 |       `-- <run-id>/
 |           |-- spec.md
 |           `-- summary.md
-|-- scripts/
-|   `-- validate-gate.py
 `-- .gen-eval/
     `-- <run-id>/
         |-- state.json
@@ -182,27 +165,35 @@ To reduce same-model confirmation bias, the SprintEvaluator is dispatched on a m
 
 ```text
 gen-eval-loop/
-|-- .claude-plugin/plugin.json
-|-- commands/gen-eval.md
-|-- scripts/
-|   `-- validate-gate.py
-`-- skills/gen-eval-loop/
-    |-- SKILL.md
-    |-- artifact-schema.md
-    |-- state-machine.md
-    |-- file-communication-layout.md
-    |-- model-adaptation.md
-    |-- planner-prompt.md
-    |-- generator-prompt.md
-    |-- evaluator-prompt.md          (deprecated — kept for reference)
-    |-- contract-reviewer-prompt.md  (Gate B)
-    |-- sprint-evaluator-prompt.md   (Gate C)
-    |-- sprint-contract-template.md
-    |-- run-summary-template.md
-    |-- scoring-rubric.md
-    `-- profiles/
-        |-- ui/rubric.md
-        |-- backend/rubric.md
-        |-- agentic/rubric.md
-        `-- content/rubric.md
+├── .claude-plugin/plugin.json
+├── commands/gen-eval.md
+├── runtime/                        # TypeScript v2 — authoritative implementation
+│   ├── src/
+│   │   ├── app/                    # controllers, CLI commands
+│   │   ├── domain/                 # state machine, types
+│   │   ├── schemas/                # Zod schemas (single source of truth)
+│   │   ├── roles/                  # Planner, Generator, Evaluator + adapters
+│   │   ├── evidence/               # Playwright runner
+│   │   ├── render/                 # Markdown rendering
+│   │   └── storage/                # FileStore, paths
+│   ├── tests/                      # node:test coverage
+│   └── package.json
+└── skills/gen-eval-loop/           # reference docs for runtime roles
+    ├── SKILL.md
+    ├── artifact-schema.md
+    ├── state-machine.md
+    ├── file-communication-layout.md
+    ├── model-adaptation.md
+    ├── planner-prompt.md
+    ├── generator-prompt.md
+    ├── contract-reviewer-prompt.md
+    ├── sprint-evaluator-prompt.md
+    ├── sprint-contract-template.md
+    ├── run-summary-template.md
+    ├── scoring-rubric.md
+    └── profiles/
+        ├── ui/rubric.md
+        ├── backend/rubric.md
+        ├── agentic/rubric.md
+        └── content/rubric.md
 ```
