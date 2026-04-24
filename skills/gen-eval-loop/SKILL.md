@@ -3,6 +3,11 @@ name: gen-eval-loop
 description: Use when the user wants an AI quality system, not just an AI builder. This skill creates auditable runs with a quality profile, signed contract, evidence per criterion, a scorecard, and a final summary. Best for ambitious UI, backend, agentic, or content work where self-assessment is unreliable.
 ---
 
+> **Status:** Reference documentation for the TypeScript runtime's roles.
+> The orchestration logic described below is now implemented deterministically in `runtime/`.
+> Do NOT attempt to execute this workflow with LLM subagents inside Claude Code — use `/gen-eval`, which delegates to the runtime CLI.
+> This document describes the conceptual model the runtime implements.
+
 # gen-eval-loop
 
 ## Purpose
