@@ -1,0 +1,92 @@
+# Evaluation corpus for gen-eval-loop.
+# Each task has a prompt, profile, and three dimensions to judge on.
+# Tasks intentionally vary in ambition and ambiguity.
+
+tasks:
+  # ── ui profile (6) ───────────────────────────────
+  - id: ui-01-coffee-homepage
+    profile: ui
+    prompt: "Build a premium homepage for a fictional specialty coffee roaster. Include hero, menu of 5 beans with prices, origin story, and a clear order CTA."
+    judgment_dimensions: [design_quality, originality, craft]
+  - id: ui-02-pricing-page
+    profile: ui
+    prompt: "Build a three-tier SaaS pricing page with monthly/annual toggle, a highlighted recommended tier, and a comparison table of 8 features."
+    judgment_dimensions: [design_quality, functionality, craft]
+  - id: ui-03-404-page
+    profile: ui
+    prompt: "Design a memorable 404 page for a fintech product. Maintain brand seriousness while being distinctive."
+    judgment_dimensions: [originality, design_quality, craft]
+  - id: ui-04-contact-form
+    profile: ui
+    prompt: "A contact form with name, email, message, and a 'type of inquiry' dropdown. Client-side validation and a tasteful success state."
+    judgment_dimensions: [functionality, craft, design_quality]
+  - id: ui-05-dashboard-widget
+    profile: ui
+    prompt: "A single analytics dashboard widget showing daily revenue trend over 30 days with a sparkline, a delta vs previous period, and a hover tooltip."
+    judgment_dimensions: [design_quality, functionality, craft]
+  - id: ui-06-empty-state
+    profile: ui
+    prompt: "An empty state component for a project management tool's task list when no tasks exist yet. Include illustration, copy, and a primary CTA."
+    judgment_dimensions: [originality, design_quality, craft]
+
+  # ── backend profile (6) ──────────────────────────
+  - id: be-01-url-shortener
+    profile: backend
+    prompt: "Implement a URL shortener API: POST /shorten accepts a URL and returns a short slug; GET /:slug redirects to the original. Persist to SQLite."
+    judgment_dimensions: [correctness, reliability, operability]
+  - id: be-02-rate-limit
+    profile: backend
+    prompt: "Add a per-IP rate limiter middleware to an Express app: max 60 requests per minute, returning 429 with a Retry-After header."
+    judgment_dimensions: [correctness, reliability, observability]
+  - id: be-03-csv-importer
+    profile: backend
+    prompt: "A CLI that imports a CSV of products (name, price, stock) into SQLite. Handle malformed rows by skipping them with a warning on stderr. Report totals at the end."
+    judgment_dimensions: [reliability, observability, operability]
+  - id: be-04-retry-with-backoff
+    profile: backend
+    prompt: "A generic retry helper in TypeScript: configurable max attempts, exponential backoff with jitter, retry only on specific error classes. Include tests."
+    judgment_dimensions: [correctness, reliability, observability]
+  - id: be-05-webhook-signature
+    profile: backend
+    prompt: "An Express endpoint that receives a JSON webhook, validates an HMAC-SHA256 signature in the X-Signature header using a shared secret, and rejects mismatches with 401."
+    judgment_dimensions: [correctness, reliability, observability]
+  - id: be-06-background-job
+    profile: backend
+    prompt: "A small job runner that processes items from an in-memory queue with N workers, gracefully drains on SIGTERM, and logs each completion with latency."
+    judgment_dimensions: [reliability, observability, operability]
+
+  # ── agentic profile (4) ──────────────────────────
+  - id: ag-01-research-agent
+    profile: agentic
+    prompt: "An agent that takes a research question, plans 2-3 search queries, fetches results (mock HTTP tool), deduplicates by URL, and produces a 3-paragraph synthesis."
+    judgment_dimensions: [correctness, reliability, observability]
+  - id: ag-02-code-refactor-agent
+    profile: agentic
+    prompt: "An agent that reads a TypeScript file, identifies any function longer than 40 lines, and proposes a refactor as a unified diff (no application yet)."
+    judgment_dimensions: [correctness, reliability, observability]
+  - id: ag-03-meeting-notes-agent
+    profile: agentic
+    prompt: "An agent that ingests raw meeting transcripts (stdin) and produces: attendees, topics discussed, decisions made, and follow-up owners with dates."
+    judgment_dimensions: [correctness, operability, reliability]
+  - id: ag-04-error-triage-agent
+    profile: agentic
+    prompt: "An agent that reads the last 50 lines of an application log, classifies each error into known categories, and outputs a prioritized incident summary."
+    judgment_dimensions: [correctness, observability, reliability]
+
+  # ── content profile (4) ──────────────────────────
+  - id: ct-01-onboarding-email
+    profile: content
+    prompt: "Write a 6-email onboarding sequence for a new user of a Kanban tool. Email 1-6, each with subject and body, escalating from basic setup to power features."
+    judgment_dimensions: [specificity, structure, factual_grounding]
+  - id: ct-02-migration-guide
+    profile: content
+    prompt: "A migration guide from REST to GraphQL for a small team. Include prereqs, step-by-step, common pitfalls, and a rollback plan."
+    judgment_dimensions: [structure, specificity, factual_grounding]
+  - id: ct-03-postmortem
+    profile: content
+    prompt: "A blameless postmortem for a hypothetical 2-hour payment outage caused by an expired SSL cert on a canary. Include timeline, contributing factors, action items."
+    judgment_dimensions: [structure, specificity, factual_grounding]
+  - id: ct-04-product-spec
+    profile: content
+    prompt: "A product spec for adding a 'saved filters' feature to an issue tracker. Include user stories, UX notes, API changes, acceptance criteria, and rollout plan."
+    judgment_dimensions: [structure, specificity, factual_grounding]
