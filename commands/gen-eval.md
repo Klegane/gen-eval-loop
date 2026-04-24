@@ -1,7 +1,7 @@
 ---
-description: Run the AI quality system. Create a run, choose a quality profile, enforce spec-contract-implementation-evaluation gates, and emit evidence plus a final summary.
+description: Run the AI quality system via the TypeScript runtime. Delegates all orchestration to `runtime/` and surfaces the result.
 argument-hint: <deliverable or evaluation target>
-allowed-tools: [Read, Write, Edit, Glob, Grep, Bash, Task, TodoWrite, AskUserQuestion]
+allowed-tools: [Read, Bash]
 ---
 
 # /gen-eval
@@ -14,198 +14,63 @@ $ARGUMENTS
 
 ## Controller stance
 
-You are the controller. You do not write product code directly unless the active execution mode is explicitly `evaluate-only` and the user asked for analysis only. Your job is to create an auditable run and enforce the gates.
+You are a thin wrapper around the TypeScript runtime. Do NOT orchestrate the loop in-prompt and do NOT dispatch subagents. The runtime in `runtime/` owns state, validation, role dispatch, and evidence collection.
 
-## Step 0 - Load the skill
+## Step 1 — Confirm the profile
 
-Load the `gen-eval-loop` skill and follow it exactly. The skill owns the run structure, state machine, artefact schema, and profile rules.
+Pick the profile that best fits the request:
 
-## Step 1 - Initialize the run
+- `ui` — visual surfaces, landing pages, dashboards (requires Playwright MCP + browsers)
+- `backend` — APIs, services, data workflows
+- `agentic` — tool-using agents, orchestrators
+- `content` — long-form writing, specs, customer-facing copy
 
-Before dispatching any subagent:
+**Current runtime limitation:** the full-loop resume path is implemented for the `ui` profile. Other profiles can still run the individual CLI commands (init-run, write-spec-skeleton, etc.) but `run-full-loop` may error on non-ui profiles. If the request is clearly not ui, confirm with the user before proceeding.
 
-1. Derive a stable `run_id` from the request plus timestamp.
-2. Pick the `execution_mode`:
-   - `full-loop`
-   - `plan-only`
-   - `evaluate-only`
-3. Pick the `quality_profile`:
-   - `ui`
-   - `backend`
-   - `agentic`
-   - `content`
-4. Detect the current model and choose the `delivery_mode` (`single-pass` or `short-sprint`) using `skills/gen-eval-loop/model-adaptation.md`.
-5. Choose the `evaluator_model` using `skills/gen-eval-loop/model-adaptation.md`:
-   - If the active model is `claude-sonnet-*`, prefer `claude-opus-*` for the SprintEvaluator.
-   - If no upgrade is available, use the same model and set `evaluatorModelNote: "same model — upgrade unavailable"` in `state.json`.
-   - Record `evaluatorModel` in `state.json`.
-6. Pick the `git_mode`:
-   - `commit-mode`
-   - `workspace-mode`
-7. Initialize:
-   - `docs/gen-eval/<run-id>/spec.md`
-   - `docs/gen-eval/<run-id>/summary.md`
-   - `.gen-eval/<run-id>/state.json`
-
-## Step 2 - Precondition checks
-
-### UI profile — Playwright hard dependency
-
-If the active profile is `ui`, verify that Playwright MCP tools (`mcp__playwright__*`) are available **before dispatching the Planner**.
-
-If Playwright is unavailable:
-1. Do NOT initialize the run.
-2. Stop and tell the user:
-
-   > "The `ui` quality profile requires Playwright MCP for browser evaluation. Playwright MCP tools (`mcp__playwright__*`) are not available in this session. Options:
-   > - Start Claude Code with Playwright MCP configured and retry.
-   > - Switch to the `backend` or `content` profile if visual quality is not the primary concern.
-   > The run cannot proceed without Playwright for UI evaluation."
-
-3. Set `state.json` to `aborted` if it was already initialized, then stop.
-
-There is no degraded mode for the UI profile. Static-only evaluation defeats the purpose of UI quality gating.
-
-### Git mode detection
-
-If git is unavailable or the workspace policy makes commits inappropriate, set `git_mode` to `workspace-mode` and record that limitation in `state.json`.
-
-## Gate validation — how to call the validator
-
-Before advancing state at any gate, run the validator via Bash:
+## Step 2 — Verify the runtime is built
 
 ```bash
-python3 scripts/validate-gate.py --run-id <RUN_ID> --gate <A|B|C|D>
+test -f runtime/dist/cli.js || (cd runtime && npm ci && npm run build)
 ```
 
-If the command exits with a non-zero code:
-1. Do NOT advance `state.json`.
-2. Report the exact error message to the user verbatim.
-3. Resolve the blocking issue before retrying.
+## Step 3 — Pick the provider based on available credentials
 
-If `pyyaml` is not installed:
-```bash
-pip install pyyaml --quiet
-```
-Then retry.
+- if `$ANTHROPIC_API_KEY` is set → `--provider anthropic`
+- else if `$OPENAI_API_KEY` is set → `--provider openai`
+- else → `--provider development` (deterministic, no network; smoke tests only)
 
-## Step 3 - Planner
+Select the matching model:
+- anthropic → `claude-sonnet-4-6` (or whatever the user's `ANTHROPIC_MODEL` env specifies)
+- openai → `gpt-5.2` (or `OPENAI_MODEL`)
+- development → `runtime-dev`
 
-Dispatch the Planner with:
+## Step 4 — Delegate to the runtime
 
-- the raw user request
-- `run_id`
-- `execution_mode`
-- `delivery_mode`
-- `quality_profile`
-- `git_mode`
-
-The Planner writes `docs/gen-eval/<run-id>/spec.md`.
-
-Read the spec yourself before continuing. If it is bland, vague, or not auditable, send it back for revision before starting sprint work.
-
-After reading the spec, run Gate A validation:
+Run the full loop:
 
 ```bash
-python3 scripts/validate-gate.py --run-id <RUN_ID> --gate A
+cd runtime && npm run --silent start -- run-full-loop \
+  --prompt "$ARGUMENTS" \
+  --model "<model id for the selected provider>" \
+  --provider "<provider>" \
+  --profile "<profile from Step 1>" \
+  --playwright-available "<true if ui profile else false>"
 ```
 
-Do not dispatch the Generator until Gate A exits 0.
+## Step 5 — Surface the result
 
-## Step 4 - Contract gate
+The runtime prints a JSON object on stdout. Extract and show the user:
 
-For each sprint:
+- `runId`
+- `status` (final run status)
+- `completed` (boolean)
+- `summaryMarkdownPath` — link so the user can read the full summary
 
-1. Dispatch Generator in `DRAFT_CONTRACT`.
-2. Dispatch **ContractReviewer** (using `contract-reviewer-prompt.md`) for this sprint's contract.
-3. If ContractReviewer reports `CHANGES_REQUESTED`, the Generator revises and resubmits.
-4. ContractReviewer must be a **fresh subagent each negotiation round** — never reuse its session.
-5. Do not proceed until:
-   - the contract validates against the artefact schema
-   - both signatures are present
-   - every criterion maps to a valid dimension in the active profile rubric
-   - every criterion has a concrete verification method
-
-If three negotiation rounds fail, escalate to the user with a concise gating question.
-
-After the ContractReviewer reports `SIGNED`, run Gate B validation:
-
-```bash
-python3 scripts/validate-gate.py --run-id <RUN_ID> --gate B
-```
-
-The script is the authoritative gate check. Do not advance `state.json` to `contract_signed` until Gate B exits 0.
-
-## Step 5 - Implementation gate
-
-Only in `full-loop` mode:
-
-1. Dispatch Generator in `IMPLEMENT`.
-2. Require `report.md` before evaluation.
-3. Require `state.json` to move from `contract_signed` to `implemented`.
-
-## Step 6 - Evaluation gate
-
-Dispatch **SprintEvaluator** (using `sprint-evaluator-prompt.md`) in a **fresh subagent session**.
-
-This must NOT be the same session used for contract review in Step 4. A SprintEvaluator has no memory of the ContractReviewer session.
-
-When dispatching the SprintEvaluator subagent, include in the prompt:
-
-> Preferred model for this subagent: [evaluatorModel from state.json]
-
-Note: if the environment does not support per-subagent model override, log `evaluatorModelNote` in `evidence.json` under `notes`.
-
-The SprintEvaluator must produce:
-
-- `.gen-eval/<run-id>/sprint-N/score.md`
-- `.gen-eval/<run-id>/sprint-N/evidence.json`
-
-After the SprintEvaluator reports `SCORED`, run Gate C validation:
-
-```bash
-python3 scripts/validate-gate.py --run-id <RUN_ID> --gate C
-```
-
-Do not accept PASS or FAIL from the SprintEvaluator until Gate C exits 0. The script's verdict supersedes the SprintEvaluator's self-reported verdict.
-
-Do not accept PASS unless:
-
-- every criterion has evidence
-- every criterion meets or exceeds threshold
-- no criterion is marked `UNVERIFIED`
-
-## Step 7 - Branching
-
-- PASS -> update `state.json`, append sprint result, decide next sprint or finish
-- FAIL -> update `state.json`, ask the Generator to choose `refine` or `pivot`, then start the next sprint
-- CAP_REACHED -> stop and escalate to the user with the run summary
-
-## Step 8 - Finalization
-
-Every run ends with `docs/gen-eval/<run-id>/summary.md`.
-
-After writing `summary.md`, run Gate D validation:
-
-```bash
-python3 scripts/validate-gate.py --run-id <RUN_ID> --gate D
-```
-
-Do not mark the run complete until Gate D exits 0.
-
-The summary must include:
-
-- what was requested
-- active profile and modes
-- sprint count and verdicts
-- blocking failures or residual risks
-- why the final outcome is PASS, FAIL, ABORTED, or CAPPED
+If the runtime exits non-zero or `status` is `PRECHECK_FAILED`, show the `preflight` block verbatim so the user can fix the environment (missing API key, missing browser, etc.).
 
 ## Do not
 
-- skip `state.json` updates
-- start implementation without a signed contract
-- let the Generator grade its own work
-- use a rubric from the wrong profile
-- accept "close enough" when a criterion is below threshold
-- accept PASS with missing evidence
+- orchestrate the loop with Task subagents in Claude Code
+- read or write `run.json`, contracts, or scores directly — the runtime owns these
+- invent a separate Python validator — the runtime validates via Zod
+- continue past a non-zero exit code without surfacing the runtime's error
