@@ -175,6 +175,19 @@ function checkProviderConfiguration(
               : [],
       };
     }
+    case "claude-cli": {
+      const resolvedModel = modelOverride ?? env.CLAUDE_CLI_MODEL ?? "sonnet";
+      return {
+        id: "provider-config",
+        status: "PASS",
+        summary: `Claude CLI adapter uses the local 'claude' binary with model ${resolvedModel}. Auth is whatever the CLI is already logged into (Pro subscription / OAuth / ANTHROPIC_API_KEY).`,
+        details: [
+          `CLAUDE_CLI_PATH=${env.CLAUDE_CLI_PATH ?? "claude"}`,
+          `CLAUDE_CLI_MODEL=${resolvedModel}`,
+        ],
+        remediation: [],
+      };
+    }
   }
 }
 

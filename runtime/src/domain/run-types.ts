@@ -88,7 +88,7 @@ export interface RuntimeHealthCheck {
 
 export interface RuntimeHealthReport {
   generatedAt: string;
-  provider: "development" | "openai" | "anthropic";
+  provider: "development" | "openai" | "anthropic" | "claude-cli";
   profile: QualityProfile;
   overallStatus: RuntimeHealthStatus;
   checks: RuntimeHealthCheck[];
@@ -108,7 +108,7 @@ export interface ProviderHealthOutput {
 
 export interface ProviderHealthReport {
   generatedAt: string;
-  provider: "development" | "openai" | "anthropic";
+  provider: "development" | "openai" | "anthropic" | "claude-cli";
   model: string | null;
   adapterName: string;
   status: ProviderHealthStatus;
@@ -119,7 +119,7 @@ export interface ProviderHealthReport {
 
 export interface PreflightReport {
   status: PreflightStatus;
-  provider: "development" | "openai" | "anthropic";
+  provider: "development" | "openai" | "anthropic" | "claude-cli";
   profile: QualityProfile;
   model: string | null;
   runtimeHealth: RuntimeHealthReport;

@@ -180,5 +180,7 @@ function deriveFallbackAdapterName(provider: AdapterProvider): string {
       return "openai-responses";
     case "development":
       return "development";
+    case "claude-cli":
+      return "claude-cli";
   }
 }

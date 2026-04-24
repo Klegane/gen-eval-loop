@@ -125,7 +125,10 @@ function getNumberFlag(
 
 function getProviderFlag(flags: Record<string, string | boolean>): AdapterProvider | undefined {
   const provider = getStringFlag(flags, "provider");
-  return provider === "openai" || provider === "development" || provider === "anthropic"
+  return provider === "openai" ||
+    provider === "development" ||
+    provider === "anthropic" ||
+    provider === "claude-cli"
     ? provider
     : undefined;
 }

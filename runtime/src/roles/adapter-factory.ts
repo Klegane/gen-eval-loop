@@ -1,9 +1,10 @@
 import { AnthropicMessagesAdapter } from "./anthropic-messages-adapter";
+import { ClaudeCliAdapter } from "./claude-cli-adapter";
 import { DevelopmentLlmAdapter } from "./development-llm-adapter";
 import type { LlmAdapter } from "./llm-adapter";
 import { OpenAiResponsesAdapter } from "./openai-responses-adapter";
 
-export const ADAPTER_PROVIDERS = ["development", "openai", "anthropic"] as const;
+export const ADAPTER_PROVIDERS = ["development", "openai", "anthropic", "claude-cli"] as const;
 
 export type AdapterProvider = (typeof ADAPTER_PROVIDERS)[number];
 
@@ -51,12 +52,19 @@ export function createLlmAdapter(options: CreateAdapterOptions = {}): LlmAdapter
         timeoutMs: parseTimeout(env.OPENAI_TIMEOUT_MS),
       });
     }
+    case "claude-cli": {
+      return new ClaudeCliAdapter({
+        cliPath: env.CLAUDE_CLI_PATH,
+        defaultModel: env.CLAUDE_CLI_MODEL,
+        timeoutMs: parseTimeout(env.CLAUDE_CLI_TIMEOUT_MS),
+      });
+    }
   }
 }
 
 export function resolveAdapterProvider(env: NodeJS.ProcessEnv = process.env): AdapterProvider {
   const provider = env.GEN_EVAL_LLM_PROVIDER;
-  if (provider === "openai" || provider === "anthropic") {
+  if (provider === "openai" || provider === "anthropic" || provider === "claude-cli") {
     return provider;
   }
 
